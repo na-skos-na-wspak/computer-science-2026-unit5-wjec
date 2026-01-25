@@ -3,11 +3,6 @@ from tkinter import messagebox
 
 def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
     import csv
-    print(full_computers_list)
-    print(len(full_computers_list))
-    
-    index_value = -1
-
 
     # Gets all of the inputted fields
     serial = serial_entry.get()
@@ -19,17 +14,20 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
     is_r = is_ready.get()
     collection_e = collection_entry.get()
 
-    for i in range(len(full_computers_list)):
-        if serial == full_computers_list[i][0]:
-            index_value = i
-
     save_list = [serial, problem, custname, custphone, repairid, is_s, is_r, collection_e]
     
-    if index_value != -1:
-        #        with open('computers.csv', 'w+', newline='') as list:
-        #    writer = csv.writer(list)
-        #    writer.writerow(save_list)
-        print("hi")
+    if full_computers_list != 0:
+        poppable_values = []
+        for i in range(len(full_computers_list)):
+            if serial == full_computers_list[i][0]:
+                index = i
+        poppable_values.append(index)
+        del full_computers_list[index]
+        full_computers_list.append(save_list)
+        
+        with open('computers.csv', 'w', newline='') as list:
+            writer = csv.writer(list)
+            writer.writerow(save_list)
     else:
         # Appends to the staff file
         with open('computers.csv', 'a', newline='') as list:
@@ -128,7 +126,7 @@ def staff_add(IsAdmin, main_menu):
 
     staff_add.mainloop()
 
-def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, full_computers_list=0):
+def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, full_computers_list=0):
     if list_items != 0:
         index = listbox.curselection()[0]
         list_items.destroy()
@@ -202,16 +200,16 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, full_computers_list=
     is_ready_button.pack()
 
     if list_items != 0:
-        serial_entry.insert(0, full_computers_list[index][0])
-        problem_entry.insert(0, full_computers_list[index][1])
-        custname_entry.insert(0,full_computers_list[index][2])
-        custphone_entry.insert(0, full_computers_list[index][3])
-        repairid_entry.insert(0, full_computers_list[index][4])
-        if full_computers_list[index][5] == "1":
+        serial_entry.insert(0, computers_list[index][0])
+        problem_entry.insert(0, computers_list[index][1])
+        custname_entry.insert(0,computers_list[index][2])
+        custphone_entry.insert(0, computers_list[index][3])
+        repairid_entry.insert(0, computers_list[index][4])
+        if computers_list[index][5] == "1":
            is_scrap_button.select()
-        if full_computers_list[index][6] == '1':
+        if computers_list[index][6] == '1':
            is_ready_button.select()
-        collection_entry.insert(0, full_computers_list[index][7])
+        collection_entry.insert(0, computers_list[index][7])
 
     comp_add.mainloop()
 
@@ -227,6 +225,7 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = ""):
 
     import csv
     full_computers_list = list(csv.reader(open("computers.csv")))
+    print(full_computers_list)
     computers_list = list(csv.reader(open("computers.csv")))
 
 
@@ -264,7 +263,7 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = ""):
     listbox = tk.Listbox(list_items, listvariable=list_variable)
     listbox.pack(padx=10, pady=10, expand=True)
  #   itemselect = tk.Button(list_items, text = "select", command = lambda: comp_add(IsAdmin, list_items, listbox, computers_list))
-    itemselect = tk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list))
+    itemselect = tk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list, full_computers_list))
     itemselect.pack()
     delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, full_computers_list))
     delitem.pack()
