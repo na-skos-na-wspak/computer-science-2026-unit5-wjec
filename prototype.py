@@ -328,6 +328,15 @@ def login():
     login_prompt = tk.Tk()
     login_prompt.geometry('200x150')
     login_prompt.title('Login')
+
+    try:
+        import csv
+        Staff_list = list(csv.reader(open("staff.csv")))
+        if Staff_list == []:
+            print("There is no staff")
+    except:
+        print("Loaded")
+
     
     # Creates the input boxes for Username and Passowrd
     username_label = tk.Label(login_prompt, text='Username:')
