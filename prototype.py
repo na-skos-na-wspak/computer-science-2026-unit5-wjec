@@ -60,9 +60,13 @@ def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_
     # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given user was saved.")
 
-def staff_add(IsAdmin, main_menu):
-    main_menu.destroy()
+def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     menu_position = "staff_add"
+    if staff_list != 0:
+        index = listbox.curselection()[0]
+        list_items.destroy()
+    else:
+        main_menu.destroy()
 
     staff_add = tk.Tk()
     staff_add.title('Staff Modification')
@@ -213,7 +217,7 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
 
     comp_add.mainloop()
 
-def list_items(IsAdmin, main_menu, comp_r = "", comp_s = ""):
+def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
     main_menu.destroy()
     menu_position = "list_items"
 
@@ -222,51 +226,76 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = ""):
     
     a_back_button = tk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
     a_back_button.pack()
-
+    
     import csv
-    full_computers_list = list(csv.reader(open("computers.csv")))
-    print(full_computers_list)
-    computers_list = list(csv.reader(open("computers.csv")))
+    
+    if staff_list_b == "":
+        full_computers_list = list(csv.reader(open("computers.csv")))
+        print(full_computers_list)
+        computers_list = list(csv.reader(open("computers.csv")))
 
 
-    poppable_values = []
+        poppable_values = []
 
-    if comp_r == "1":
-        print("Works Here")
+        if comp_r == "1":
+            print("Works Here")
+            for i in range(len(computers_list)):
+                print(computers_list[i][5])
+                if computers_list[i][5] == "1":
+                    poppable_values.append(i) 
+
+        if comp_s == "1":
+            print("Works Here")
+            for i in range(len(computers_list)):
+                print(computers_list[i][5])
+                if computers_list[i][5] == "0":
+                    poppable_values.append(i) 
+
+        for i in sorted(poppable_values, reverse=True):
+            del computers_list[i]
+
+
+        condensed_list = [[0 for j in range(2)] for i in range(len(computers_list))]
+        print(condensed_list)
+
         for i in range(len(computers_list)):
-            print(computers_list[i][5])
-            if computers_list[i][5] == "1":
-                poppable_values.append(i) 
+            #0 denotes the serial
+            #2 denotes the name of the person who owns the computer
+            condensed_list[i][0] = computers_list[i][0]
+            condensed_list[i][1] = computers_list[i][2]
 
-    if comp_s == "1":
-        print("Works Here")
-        for i in range(len(computers_list)):
-            print(computers_list[i][5])
-            if computers_list[i][5] == "0":
-                poppable_values.append(i) 
+        list_variable = tk.Variable(value=condensed_list)
 
-    for i in sorted(poppable_values, reverse=True):
-        del computers_list[i]
+        listbox = tk.Listbox(list_items, listvariable=list_variable)
+        listbox.pack(padx=10, pady=10, expand=True)
+        itemselect = tk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list, full_computers_list))
+        itemselect.pack()
+        delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, full_computers_list))
+        delitem.pack()
+    
+    else:
+        staff_list = list(csv.reader(open("staff.csv")))
+        print(staff_list)
 
+        condensed_list = [[0 for j in range(2)] for i in range(len(staff_list))]
+        print(condensed_list)
 
-    condensed_list = [[0 for j in range(2)] for i in range(len(computers_list))]
-    print(condensed_list)
+        for i in range(len(staff_list)):
+            #0 denotes the staff id
+            #2 denotes the name of the person
+            condensed_list[i][0] = staff_list[i][0]
+            condensed_list[i][1] = staff_list[i][1]
 
-    for i in range(len(computers_list)):
-        #0 denotes the serial
-        #2 denotes the name of the person who owns the computer
-        condensed_list[i][0] = computers_list[i][0]
-        condensed_list[i][1] = computers_list[i][2]
+        list_variable = tk.Variable(value=condensed_list)
 
-    list_variable = tk.Variable(value=condensed_list)
+        listbox = tk.Listbox(list_items, listvariable=list_variable)
+        listbox.pack(padx=10, pady=10, expand=True)
+        itemselect = tk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, main_menu, list_items, listbox, staff_list))
+        itemselect.pack()
+        delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, staff_list))
+        delitem.pack()
+    
 
-    listbox = tk.Listbox(list_items, listvariable=list_variable)
-    listbox.pack(padx=10, pady=10, expand=True)
- #   itemselect = tk.Button(list_items, text = "select", command = lambda: comp_add(IsAdmin, list_items, listbox, computers_list))
-    itemselect = tk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list, full_computers_list))
-    itemselect.pack()
-    delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, full_computers_list))
-    delitem.pack()
     list_items.mainloop()
 
 def delete_item(IsAdmin, main_menu, list_items, listbox, computers_list):
@@ -283,9 +312,6 @@ def delete_item(IsAdmin, main_menu, list_items, listbox, computers_list):
         with open('computers.csv', 'w+', newline='') as list:
             writer = csv.writer(list)
             writer.strip(index_value)
- 
-
-
 
 # Destroys the main menu and returns to the login
 def logout(main_menu):
@@ -296,7 +322,7 @@ def main_menu(IsAdmin):
     print(IsAdmin)
     main_menu = tk.Tk()
     main_menu.title('Main Menu')
-    main_menu.geometry('300x170')
+    main_menu.geometry('300x200')
     
     # Inserts the buttons into the menu
     button_logout = tk.Button(main_menu, text = "Logout", command = lambda: logout(main_menu))
@@ -315,12 +341,18 @@ def main_menu(IsAdmin):
 
         button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: list_items(IsAdmin, main_menu, comp_s = "1"))
         button_list_bookings.pack()
+
+        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"))
+        button_list_staff.pack()
     else:
         button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
         button_staff_add.pack()
 
         button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
         button_list_bookings.pack()
+
+        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
+        button_list_staff.pack()
 
     main_menu.mainloop()
 
