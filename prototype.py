@@ -6,13 +6,31 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
 
     # Gets all of the inputted fields
     serial = serial_entry.get()
+    if serial == "":
+        messagebox.showerror("Error", "There is no serial specified.")
+        return
     problem = problem_entry.get()
+    if problem == "":
+        messagebox.showerror("Error", "There is no problem specified.")
+        return
     custname = custname_entry.get()
+    if custname == "":
+        messagebox.showerror("Error", "There is no customer name specified.")
+        return
     custphone = custphone_entry.get()
+    if custphone == "":
+        messagebox.showerror("Error", "There is no customer phone number specified.")
+        return
     repairid = repairid_entry.get()
+    if repairid == "":
+        messagebox.showerror("Error", "There is no data within the repair id entry.")
+        return
     is_s = is_scrap.get()
     is_r = is_ready.get()
     collection_e = collection_entry.get()
+    if collection_e == "":
+        messagebox.showerror("Error", "There is no data within the collection entry.")
+        return
 
     save_list = [serial, problem, custname, custphone, repairid, is_s, is_r, collection_e]
     
@@ -141,15 +159,6 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
 
     if list_items != 0:
         comp_add.title('Modify Computer')
-#        serial_entry.insert(0, computers_list[index][0])
-#        problem_entry = computers_list[index][1]
-#        custname_entry = computers_list[index][2]
-#        custphone = computers_list[index][3]
-#        repairid = computers_list[index][4]
-#        is_s = computers_list[index][5]
-#        is_r = computers_list[index][6]
-#        collection_e = computers_list[index][7]
-        
     else:
         comp_add.title('Add new Computer')
 
