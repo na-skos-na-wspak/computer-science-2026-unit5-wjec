@@ -60,12 +60,33 @@ def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_
     
     # Gets all of the inputted fields
     username = username_entry.get()
+    if username == "":
+        messagebox.showerror("Error", "There is no data within the username entry.")
+        return
     password = password_entry.get()
+    if password == "":
+        messagebox.showerror("Error", "There is no data within the password entry.")
+        return
     fname = fname_entry.get()
+    if fname == "":
+        messagebox.showerror("Error", "There is no data within the first name entry.")
+        return
     sname = sname_entry.get()
+    if sname == "":
+        messagebox.showerror("Error", "There is no data within the second name entry.")
+        return
     email = email_entry.get()
+    if email == "":
+        messagebox.showerror("Error", "There is no data within the email entry.")
+        return
     phonenum = phonenum_entry.get()
+    if phonenum == "":
+        messagebox.showerror("Error", "There is no data within the phone number entry.")
+        return
     dob = dob_entry.get()
+    if dob == "":
+        messagebox.showerror("Error", "There is no data within the Date of Birth entry.")
+        return
     is_a = is_admin.get()
 
     save_list = [next_staffid, username, password, fname, sname, email, phonenum, dob, is_a]
