@@ -1,9 +1,6 @@
-atest1,btest1,ctest1,dtest1,etest1,1,1,ftest1
-atest2,btest2,ctest2,etest2,etest2,1,1,ftest2
-atest3,btest3,ctest3,etest3,etest3,0,1,ftest3
-atest4,btest4,ctest4,dtest4,etest4,0,1,ftest4
-atest5,btest5,ctest5,dtest5,etest5,0,1,ftest5
-atest6,btest6,ctest6,dtest6,etest6,0,1,ftest6
-2143124214,Doesn't turn on,Delyth,12412421,2,0,0,12/12/26
-21312312,Fucking broken? IDK man lol,N/a,N/a,N/a,1,0,Yesterday
+1,atest1,btest1,1234,1234,1,1,ctest1
+2,atest2,btest2,1234,1234,0,1,ctest2
+3,atest3,btest3,1234,1234,1,1,ctest3
+4,atest4,btest4,1234,1234,0,1,ctest4
+5,atest5,btest5,1234,1234,1,1,ctest5
 2143124214,Doesn't turn on,Delyth,12412421,2,0,0,12/12/26
