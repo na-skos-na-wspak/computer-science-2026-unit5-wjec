@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
+def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list(())):
     import csv
 
     # Gets all of the inputted fields
@@ -35,11 +35,9 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
     save_list = [serial, problem, custname, custphone, repairid, is_s, is_r, collection_e]
     
     if full_computers_list != 0:
-        poppable_values = []
         for i in range(len(full_computers_list)):
             if serial == full_computers_list[i][0]:
                 index = i
-        poppable_values.append(index)
         del full_computers_list[index]
         full_computers_list.append(save_list)
         
@@ -50,12 +48,12 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
         # Appends to the staff file
         with open('computers.csv', 'a', newline='') as list:
             writer = csv.writer(list)
-            writer.writerow(save_list)
+            writer.writerow(full_computers_list)
     
     # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given computer was saved.")
 
-def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin):
+def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list=list()):
     import csv
     
     # Gets all of the inputted fields
@@ -91,12 +89,25 @@ def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_
 
     save_list = [next_staffid, username, password, fname, sname, email, phonenum, dob, is_a]
 
-    # Appends to the staff file
-    with open('staff.csv', 'a', newline='') as list:
-        writer = csv.writer(list)
-        writer.writerow(save_list)
+    if staff_list != 0:
+        poppable_values = []
+        for i in range(len(staff_list)):
+            if next_staffid == staff_list[i][0]:
+                index = i
+        poppable_values.append(index)
+        del staff_list[index]
+        staff_list.append(save_list)
+        
+        with open('staff.csv', 'w', newline='') as list:
+            writer = csv.writer(list)
+            writer.writerow(save_list)
+    else:
+        # Appends to the staff file
+        with open('staff.csv', 'a', newline='') as list:
+            writer = csv.writer(list)
+            writer.writerow(save_list)
 
-    # Shows a messagebox once saved
+        # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given user was saved.")
 
 def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
@@ -113,9 +124,11 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     # Reads from the staff file to check how many users there are already, to choose a new ID for the user being created
     import csv
     current_staff_list = list(csv.reader(open("staff.csv")))
-
-    next_staffid = len(current_staff_list) + 1
-
+    
+    if list_items != 0:
+        next_staffid = staff_list[index][0]
+    else:
+        next_staffid = len(current_staff_list) + 1
 
     is_admin = tk.IntVar()
     
@@ -166,6 +179,17 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
 
     is_admin_button = tk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0)
     is_admin_button.pack()
+
+    if list_items != 0:
+        username_entry.insert(0, staff_list[index][1])
+        password_entry.insert(0,staff_list[index][2])
+        fname_entry.insert(0, staff_list[index][3])
+        sname_entry.insert(0, staff_list[index][4])
+        email_entry.insert(0, staff_list[index][5])
+        phonenum_entry.insert(0, staff_list[index][6])
+        dob_entry.insert(0, staff_list[index][7])
+        if staff_list[index][7] == "1":
+           is_scrap_button.select()
 
     staff_add.mainloop()
 
@@ -434,7 +458,7 @@ def attempt_login(username, password, login_prompt):
 
     # If TempPassword equals the associated password with the found TempPosition, check whether the account is an admin
     if TempPassword == Staff_list[TempPosition][2]:
-        if Staff_list[TempPosition][8] == "Y":
+        if Staff_list[TempPosition][8] == "1":
             IsAdmin = 1
         else:
             IsAdmin = 0
