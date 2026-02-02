@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list(())):
+def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
     import csv
 
     # Gets all of the inputted fields
@@ -43,12 +43,13 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
         
         with open('computers.csv', 'w', newline='') as list:
             writer = csv.writer(list)
-            writer.writerow(save_list)
+            writer.writerows(full_computers_list)
+
     else:
         # Appends to the staff file
         with open('computers.csv', 'a', newline='') as list:
             writer = csv.writer(list)
-            writer.writerow(full_computers_list)
+            writer.writerow(save_list)
     
     # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given computer was saved.")
@@ -90,24 +91,24 @@ def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_
     save_list = [next_staffid, username, password, fname, sname, email, phonenum, dob, is_a]
 
     if staff_list != 0:
-        poppable_values = []
         for i in range(len(staff_list)):
-            if next_staffid == staff_list[i][0]:
+            if username == staff_list[i][1]:
                 index = i
-        poppable_values.append(index)
-        del staff_list[index]
-        staff_list.append(save_list)
-        
-        with open('staff.csv', 'w', newline='') as list:
-            writer = csv.writer(list)
-            writer.writerow(save_list)
+                print(index)
+#        del staff_list[index]
+#        staff_list.append(save_list)
+#        
+#        with open('staff.csv', 'w', newline='') as list:
+#            writer = csv.writer(list)
+#            writer.writerows(staff_list)
+
     else:
         # Appends to the staff file
         with open('staff.csv', 'a', newline='') as list:
             writer = csv.writer(list)
             writer.writerow(save_list)
+            # Shows a messagebox once saved
 
-        # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given user was saved.")
 
 def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
