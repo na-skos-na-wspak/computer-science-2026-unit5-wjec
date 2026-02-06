@@ -92,23 +92,22 @@ def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_
 
     if staff_list != 0:
         for i in range(len(staff_list)):
-            if username == staff_list[i][1]:
+            if next_staffid == staff_list[i][0]:
                 index = i
-                print(index)
-#        del staff_list[index]
-#        staff_list.append(save_list)
-#        
-#        with open('staff.csv', 'w', newline='') as list:
-#            writer = csv.writer(list)
-#            writer.writerows(staff_list)
+        del staff_list[index]
+        staff_list.append(save_list)
+        
+        with open('staff.csv', 'w', newline='') as list:
+            writer = csv.writer(list)
+            writer.writerows(staff_list)
 
     else:
         # Appends to the staff file
         with open('staff.csv', 'a', newline='') as list:
             writer = csv.writer(list)
             writer.writerow(save_list)
-            # Shows a messagebox once saved
 
+    # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given user was saved.")
 
 def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
@@ -137,7 +136,7 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     a_back_button = tk.Button(staff_add, text = "Back", command = lambda: staff_back_button(IsAdmin, staff_add))
     a_back_button.pack()
 
-    save_button = tk.Button(staff_add, text = "Save", command = lambda: save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin))
+    save_button = tk.Button(staff_add, text = "Save", command = lambda: save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list))
     save_button.pack()
     
     staffid_label = tk.Label(staff_add, text='Staff ID\n' + str(next_staffid))
