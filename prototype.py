@@ -120,6 +120,7 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
 
     staff_add = tk.Tk()
     staff_add.title('Staff Modification')
+    staff_add.resizable(width=False, height=False)
 
     # Reads from the staff file to check how many users there are already, to choose a new ID for the user being created
     import csv
@@ -209,6 +210,8 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
 
     menu_position = "comp_add"
     
+    comp_add.resizable(width=False, height=False)
+
     is_scrap = tk.IntVar()
     is_ready = tk.IntVar()
     
@@ -277,6 +280,7 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 
     list_items = tk.Tk()
     list_items.title('List of items')
+    list_items.resizable(width=False, height=False)
     
     a_back_button = tk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
     a_back_button.pack()
@@ -376,43 +380,45 @@ def main_menu(IsAdmin):
     print(IsAdmin)
     main_menu = tk.Tk()
     main_menu.title('Main Menu')
-    main_menu.geometry('300x200')
+    main_menu.geometry('300x265')
+    main_menu.resizable(width=False, height=False)
     
     # Inserts the buttons into the menu
     button_logout = tk.Button(main_menu, text = "Logout", command = lambda: logout(main_menu))
-    button_logout.pack()
+    button_logout.pack(padx=5, pady=5)
 
     button_comp_add = tk.Button(main_menu, text = "Add Computer (Repair/Scrap)", command = lambda: comp_add(IsAdmin, main_menu))
-    button_comp_add.pack()
+    button_comp_add.pack(padx=5, pady=5)
 
     button_list_bookings = tk.Button(main_menu, text = "List Bookings", command = lambda: list_items(IsAdmin, main_menu, comp_r = "1"))
-    button_list_bookings.pack()
+    button_list_bookings.pack(padx=5, pady=5)
 
     # If the account is an admin, insert the real buttons into the program. If not, replace them with buttons displaying an error
     if IsAdmin == 1:
         button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: staff_add(IsAdmin, main_menu))
-        button_staff_add.pack()
+        button_staff_add.pack(padx=5, pady=5)
 
         button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: list_items(IsAdmin, main_menu, comp_s = "1"))
-        button_list_bookings.pack()
+        button_list_bookings.pack(padx=5, pady=5)
 
         button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"))
-        button_list_staff.pack()
+        button_list_staff.pack(padx=5, pady=5)
     else:
         button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
-        button_staff_add.pack()
+        button_staff_add.pack(padx=5, pady=5)
 
         button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
-        button_list_bookings.pack()
+        button_list_bookings.pack(padx=5, pady=5)
 
         button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
-        button_list_staff.pack()
+        button_list_staff.pack(padx=5, pady=5)
 
     main_menu.mainloop()
 
 def login():
     login_prompt = tk.Tk()
-    login_prompt.geometry('200x150')
+    login_prompt.geometry('200x215')
+    login_prompt.resizable(width=False, height=False)
     login_prompt.title('Login')
 
     try:
@@ -425,6 +431,8 @@ def login():
 
     
     # Creates the input boxes for Username and Passowrd
+    company_label = tk.Label(login_prompt, text='PC4U Login', font=("Helvetica", 20))
+    company_label.pack(pady=10)
     username_label = tk.Label(login_prompt, text='Username:')
     username_label.pack()
     username = tk.Entry(login_prompt)
@@ -436,7 +444,7 @@ def login():
     
     # Creates the login button, which starts attempt_login()
     button_login = tk.Button(login_prompt, text = "Login", command = lambda: attempt_login(username, password, login_prompt))
-    button_login.pack()
+    button_login.pack(pady=10)
     
     login_prompt.mainloop()
 
