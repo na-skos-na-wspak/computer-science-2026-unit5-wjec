@@ -280,10 +280,11 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 
     list_items = tk.Tk()
     list_items.title('List of items')
+    list_items.geometry('168x282')
     list_items.resizable(width=False, height=False)
     
     a_back_button = tk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
-    a_back_button.pack()
+    a_back_button.grid(column = 0, row = 0, padx=2, pady=2, sticky = "E")
     
     import csv
     
@@ -325,11 +326,11 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
         list_variable = tk.Variable(value=condensed_list)
 
         listbox = tk.Listbox(list_items, listvariable=list_variable)
-        listbox.pack(padx=10, pady=10, expand=True)
+        listbox.grid(column = 0, row = 1, padx=2, pady=2)
         itemselect = tk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list, full_computers_list))
-        itemselect.pack()
+        itemselect.grid(column = 0, row = 2, padx=2, pady=2, sticky = "W")
         delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, full_computers_list))
-        delitem.pack()
+        delitem.grid(column = 0, row = 2, padx=2, pady=2, sticky = "E")
     
     else:
         staff_list = list(csv.reader(open("staff.csv")))
@@ -347,12 +348,11 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
         list_variable = tk.Variable(value=condensed_list)
 
         listbox = tk.Listbox(list_items, listvariable=list_variable)
-        listbox.pack(padx=10, pady=10, expand=True)
+        listbox.grid(column = 0, row = 1, padx=10, pady=10, columnspan = 2)
         itemselect = tk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, main_menu, list_items, listbox, staff_list))
-        itemselect.pack()
+        itemselect.grid(column = 0, row = 2)
         delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, staff_list))
-        delitem.pack()
-    
+        delitem.pack(column = 1, row = 2)
 
     list_items.mainloop()
 
@@ -380,45 +380,45 @@ def main_menu(IsAdmin):
     print(IsAdmin)
     main_menu = tk.Tk()
     main_menu.title('Main Menu')
-    main_menu.geometry('300x265')
+    main_menu.geometry('232x222')
     main_menu.resizable(width=False, height=False)
     
     # Inserts the buttons into the menu
     button_logout = tk.Button(main_menu, text = "Logout", command = lambda: logout(main_menu))
-    button_logout.pack(padx=5, pady=5)
+    button_logout.grid(row = 0, column = 0, padx = 2, pady = 2)
 
-    button_comp_add = tk.Button(main_menu, text = "Add Computer (Repair/Scrap)", command = lambda: comp_add(IsAdmin, main_menu))
-    button_comp_add.pack(padx=5, pady=5)
+    button_comp_add = tk.Button(main_menu, text = "Add Computer (Repair/Scrap)", command = lambda: comp_add(IsAdmin, main_menu), width = 25)
+    button_comp_add.grid(row = 1, column = 0, padx = 2, pady = 2, sticky = "W")
 
-    button_list_bookings = tk.Button(main_menu, text = "List Bookings", command = lambda: list_items(IsAdmin, main_menu, comp_r = "1"))
-    button_list_bookings.pack(padx=5, pady=5)
+    button_list_bookings = tk.Button(main_menu, text = "List Bookings", command = lambda: list_items(IsAdmin, main_menu, comp_r = "1"), width = 25)
+    button_list_bookings.grid(row = 2, column = 0, padx = 2, pady = 2)
 
     # If the account is an admin, insert the real buttons into the program. If not, replace them with buttons displaying an error
     if IsAdmin == 1:
-        button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: staff_add(IsAdmin, main_menu))
-        button_staff_add.pack(padx=5, pady=5)
+        button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: staff_add(IsAdmin, main_menu), width = 25)
+        button_staff_add.grid(row = 3, column = 0, padx = 2, pady = 2)
 
-        button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: list_items(IsAdmin, main_menu, comp_s = "1"))
-        button_list_bookings.pack(padx=5, pady=5)
+        button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: list_items(IsAdmin, main_menu, comp_s = "1"), width = 25)
+        button_list_bookings.grid(row = 4, column = 0, padx = 2, pady = 2)
 
-        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"))
-        button_list_staff.pack(padx=5, pady=5)
+        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"), width = 25)
+        button_list_staff.grid(row = 5, column = 0, padx = 2, pady = 2)
     else:
-        button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
-        button_staff_add.pack(padx=5, pady=5)
+        button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_staff_add.grid(row = 6, column = 0, padx = 2, pady = 2)
 
-        button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
-        button_list_bookings.pack(padx=5, pady=5)
+        button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_list_bookings.grid(row = 7, column = 0, padx = 2, pady = 2)
 
-        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."))
-        button_list_staff.pack(padx=5, pady=5)
+        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_list_staff.grid(row = 8, column = 0, padx = 2, pady = 2)
 
     main_menu.mainloop()
 
 def login():
     login_prompt = tk.Tk()
-    login_prompt.geometry('200x215')
-    login_prompt.resizable(width=False, height=False)
+    login_prompt.geometry('250x140')
+    login_prompt.resizable(False, False)
     login_prompt.title('Login')
 
     try:
@@ -432,19 +432,19 @@ def login():
     
     # Creates the input boxes for Username and Passowrd
     company_label = tk.Label(login_prompt, text='PC4U Login', font=("Helvetica", 20))
-    company_label.pack(pady=10)
-    username_label = tk.Label(login_prompt, text='Username:')
-    username_label.pack()
+    company_label.grid(column = 0, row = 0, padx = 2, pady = 4, columnspan = 2)
+    username_label = tk.Label(login_prompt, text='Username:', width = 9)
+    username_label.grid(column = 0, row = 1, sticky = "W", padx = 2, pady = 2)
     username = tk.Entry(login_prompt)
-    username.pack()
-    password_label = tk.Label(login_prompt, text='Password:')
-    password_label.pack()
+    username.grid(column = 1, row = 1, sticky = "W", padx = 2, pady = 2)
+    password_label = tk.Label(login_prompt, text='Password:', width = 9)
+    password_label.grid(column = 0, row = 2, sticky = "W", padx = 2, pady = 2)
     password = tk.Entry(login_prompt, show="*")
-    password.pack()
+    password.grid(column = 1, row = 2, sticky = "W", padx = 2, pady = 2)
     
     # Creates the login button, which starts attempt_login()
     button_login = tk.Button(login_prompt, text = "Login", command = lambda: attempt_login(username, password, login_prompt))
-    button_login.pack(pady=10)
+    button_login.grid(column = 0, row = 3, padx = 2, pady = 2, columnspan = 2)
     
     login_prompt.mainloop()
 
