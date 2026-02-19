@@ -135,51 +135,51 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     
     # Inserts the buttons into the menu
     a_back_button = tk.Button(staff_add, text = "Back", command = lambda: staff_back_button(IsAdmin, staff_add))
-    a_back_button.pack()
+    a_back_button.grid(column = 4, row = 0, padx = 2, pady = 2, sticky = "E")
 
     save_button = tk.Button(staff_add, text = "Save", command = lambda: save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list))
-    save_button.pack()
+    save_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
     
-    staffid_label = tk.Label(staff_add, text='Staff ID\n' + str(next_staffid))
-    staffid_label.pack()
-
-    username_label = tk.Label(staff_add, text='Username')
-    username_label.pack()
-    username_entry = tk.Entry(staff_add)
-    username_entry.pack()
-
-    password_label = tk.Label(staff_add, text='Password')
-    password_label.pack()
-    password_entry = tk.Entry(staff_add)
-    password_entry.pack()
-
-    fname_label = tk.Label(staff_add, text='First Name')
-    fname_label.pack()
+    fname_label = tk.Label(staff_add, text='First Name:')
+    fname_label.grid(column = 0, row = 0, padx = 2, pady = 2)
     fname_entry = tk.Entry(staff_add)
-    fname_entry.pack()
+    fname_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
     
-    sname_label = tk.Label(staff_add, text='Second Name')
-    sname_label.pack()
+    sname_label = tk.Label(staff_add, text='Second Name:')
+    sname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
     sname_entry = tk.Entry(staff_add)
-    sname_entry.pack()
+    sname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
 
-    email_label = tk.Label(staff_add, text='Email')
-    email_label.pack()
-    email_entry = tk.Entry(staff_add)
-    email_entry.pack()
+    username_label = tk.Label(staff_add, text='Username:')
+    username_label.grid(column = 0, row = 2, padx = 2, pady = 2)
+    username_entry = tk.Entry(staff_add)
+    username_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
     
-    phonenum_label = tk.Label(staff_add, text='Phone Number')
-    phonenum_label.pack()
+    email_label = tk.Label(staff_add, text='Email:')
+    email_label.grid(column = 0, row = 3, padx = 2, pady = 2)
+    email_entry = tk.Entry(staff_add)
+    email_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
+    
+    phonenum_label = tk.Label(staff_add, text='Phone Number:')
+    phonenum_label.grid(column = 0, row = 4, padx = 2, pady = 2)
     phonenum_entry = tk.Entry(staff_add)
-    phonenum_entry.pack()
+    phonenum_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
 
-    dob_label = tk.Label(staff_add, text='Date Of Birth')
-    dob_label.pack()
+    dob_label = tk.Label(staff_add, text='Date Of Birth:')
+    dob_label.grid(column = 0, row = 5, padx = 2, pady = 2)
     dob_entry = tk.Entry(staff_add)
-    dob_entry.pack()
+    dob_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
 
-    is_admin_button = tk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0)
-    is_admin_button.pack()
+    password_label = tk.Label(staff_add, text='Password:')
+    password_label.grid(column = 0, row = 6, padx = 2, pady = 2)
+    password_entry = tk.Entry(staff_add)
+    password_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
+
+    is_admin_button = tk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0, width = 8)
+    is_admin_button.grid(column = 3, row = 5, columnspan = 2, padx = 2, pady = 2)
+
+    staffid_label = tk.Label(staff_add, text='Staff ID: ' + str(next_staffid))
+    staffid_label.grid(column = 3, row = 6, columnspan = 2, padx = 2, pady = 2)
 
     if list_items != 0:
         username_entry.insert(0, staff_list[index][1])
@@ -217,48 +217,48 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     
     # Inserts the buttons into the program
     a_back_button = tk.Button(comp_add, text = "Back", command = lambda: comp_back_button(IsAdmin, comp_add))
-    a_back_button.pack()
+    a_back_button.grid(column = 4, row = 0, padx = 2, pady = 2, sticky = "E")
 
     save_button = tk.Button(comp_add, text = "Save", command = lambda: save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
-    save_button.pack()
+    save_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
     
-    serial_label = tk.Label(comp_add, text='Serial')
-    serial_label.pack()
+    serial_label = tk.Label(comp_add, text='Serial:', width = 15)
+    serial_label.grid(column = 0, row = 0, padx = 2, pady = 2)
     serial_entry = tk.Entry(comp_add)
-    serial_entry.pack()
+    serial_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
 
-    problem_label = tk.Label(comp_add, text='Problem')
-    problem_label.pack()
+    problem_label = tk.Label(comp_add, text='Problem:', width = 15)
+    problem_label.grid(column = 0, row = 1, padx = 2, pady = 2)
     problem_entry = tk.Entry(comp_add)
-    problem_entry.pack()
+    problem_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
 
-    custname_label = tk.Label(comp_add, text='Customer Name')
-    custname_label.pack()
+    custname_label = tk.Label(comp_add, text='Customer Name:', width = 15)
+    custname_label.grid(column = 0, row = 3, padx = 2, pady = 2)
     custname_entry = tk.Entry(comp_add)
-    custname_entry.pack()
+    custname_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
 
-    custphone_label = tk.Label(comp_add, text='Customer Phone')
-    custphone_label.pack()
+    custphone_label = tk.Label(comp_add, text='Customer Phone:', width = 15)
+    custphone_label.grid(column = 0, row = 4, padx = 2, pady = 2)
     custphone_entry = tk.Entry(comp_add)
-    custphone_entry.pack()
+    custphone_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
     
-    repairid_label = tk.Label(comp_add, text='Repairer ID')
-    repairid_label.pack()
+    repairid_label = tk.Label(comp_add, text='Repairer ID:', width = 15)
+    repairid_label.grid(column = 0, row = 5, padx = 2, pady = 2)
     repairid_entry = tk.Entry(comp_add)
-    repairid_entry.pack()
+    repairid_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
 
-    collection_label = tk.Label(comp_add, text='Collection Date')
-    collection_label.pack()
+    collection_label = tk.Label(comp_add, text='Collection Date:', width = 15)
+    collection_label.grid(column = 0, row = 6, padx = 2, pady = 2)
     collection_entry = tk.Entry(comp_add)
-    collection_entry.pack()
+    collection_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
     
     # Creates a button if the current user is an admin
     if IsAdmin == 1:
-        is_scrap_button = tk.Checkbutton(comp_add, text='Is Scrap?', variable = is_scrap, onvalue = 1, offvalue = 0)
-        is_scrap_button.pack()
+        is_scrap_button = tk.Checkbutton(comp_add, text='Is Scrap?', variable = is_scrap, onvalue = 1, offvalue = 0, width = 8)
+        is_scrap_button.grid(column = 3, row = 5, columnspan = 2, padx = 2, pady = 2)
 
-    is_ready_button = tk.Checkbutton(comp_add, text='Ready?', variable = is_ready, onvalue = 1, offvalue = 0)
-    is_ready_button.pack()
+    is_ready_button = tk.Checkbutton(comp_add, text='Ready?', variable = is_ready, onvalue = 1, offvalue = 0, width = 8)
+    is_ready_button.grid(column = 3, row = 6, columnspan = 2, padx = 2, pady = 2)
 
     if list_items != 0:
         serial_entry.insert(0, computers_list[index][0])
@@ -280,7 +280,6 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 
     list_items = tk.Tk()
     list_items.title('List of items')
-    list_items.geometry('168x282')
     list_items.resizable(width=False, height=False)
     
     a_back_button = tk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
@@ -348,11 +347,11 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
         list_variable = tk.Variable(value=condensed_list)
 
         listbox = tk.Listbox(list_items, listvariable=list_variable)
-        listbox.grid(column = 0, row = 1, padx=10, pady=10, columnspan = 2)
+        listbox.grid(column = 0, row = 1, padx=2, pady=2)
         itemselect = tk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, main_menu, list_items, listbox, staff_list))
-        itemselect.grid(column = 0, row = 2)
+        itemselect.grid(column = 0, row = 2, padx=2, pady=2, sticky = "W")
         delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, staff_list))
-        delitem.pack(column = 1, row = 2)
+        delitem.grid(column = 0, row = 2, padx=2, pady=2, sticky = "E")
 
     list_items.mainloop()
 
@@ -380,12 +379,11 @@ def main_menu(IsAdmin):
     print(IsAdmin)
     main_menu = tk.Tk()
     main_menu.title('Main Menu')
-    main_menu.geometry('232x222')
     main_menu.resizable(width=False, height=False)
     
     # Inserts the buttons into the menu
     button_logout = tk.Button(main_menu, text = "Logout", command = lambda: logout(main_menu))
-    button_logout.grid(row = 0, column = 0, padx = 2, pady = 2)
+    button_logout.grid(row = 0, column = 0, padx = 2, pady = 2, sticky = "E")
 
     button_comp_add = tk.Button(main_menu, text = "Add Computer (Repair/Scrap)", command = lambda: comp_add(IsAdmin, main_menu), width = 25)
     button_comp_add.grid(row = 1, column = 0, padx = 2, pady = 2, sticky = "W")
