@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 
 def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
     import csv
@@ -134,51 +135,51 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     is_admin = tk.IntVar()
     
     # Inserts the buttons into the menu
-    a_back_button = tk.Button(staff_add, text = "Back", command = lambda: staff_back_button(IsAdmin, staff_add))
+    a_back_button = ttk.Button(staff_add, text = "Back", command = lambda: staff_back_button(IsAdmin, staff_add))
     a_back_button.grid(column = 4, row = 0, padx = 2, pady = 2, sticky = "E")
 
-    save_button = tk.Button(staff_add, text = "Save", command = lambda: save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list))
+    save_button = ttk.Button(staff_add, text = "Save", command = lambda: save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list))
     save_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
     
-    fname_label = tk.Label(staff_add, text='First Name:')
+    fname_label = ttk.Label(staff_add, text='First Name:', width = 14)
     fname_label.grid(column = 0, row = 0, padx = 2, pady = 2)
-    fname_entry = tk.Entry(staff_add)
+    fname_entry = ttk.Entry(staff_add)
     fname_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
     
-    sname_label = tk.Label(staff_add, text='Second Name:')
+    sname_label = ttk.Label(staff_add, text='Second Name:', width = 14)
     sname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
-    sname_entry = tk.Entry(staff_add)
+    sname_entry = ttk.Entry(staff_add)
     sname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
 
-    username_label = tk.Label(staff_add, text='Username:')
+    username_label = ttk.Label(staff_add, text='Username:', width = 14)
     username_label.grid(column = 0, row = 2, padx = 2, pady = 2)
-    username_entry = tk.Entry(staff_add)
+    username_entry = ttk.Entry(staff_add)
     username_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
     
-    email_label = tk.Label(staff_add, text='Email:')
+    email_label = ttk.Label(staff_add, text='Email:', width = 14)
     email_label.grid(column = 0, row = 3, padx = 2, pady = 2)
-    email_entry = tk.Entry(staff_add)
+    email_entry = ttk.Entry(staff_add)
     email_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
     
-    phonenum_label = tk.Label(staff_add, text='Phone Number:')
+    phonenum_label = ttk.Label(staff_add, text='Phone Number:', width = 14)
     phonenum_label.grid(column = 0, row = 4, padx = 2, pady = 2)
-    phonenum_entry = tk.Entry(staff_add)
+    phonenum_entry = ttk.Entry(staff_add)
     phonenum_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
 
-    dob_label = tk.Label(staff_add, text='Date Of Birth:')
+    dob_label = ttk.Label(staff_add, text='Date Of Birth:', width = 14)
     dob_label.grid(column = 0, row = 5, padx = 2, pady = 2)
-    dob_entry = tk.Entry(staff_add)
+    dob_entry = ttk.Entry(staff_add)
     dob_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
 
-    password_label = tk.Label(staff_add, text='Password:')
+    password_label = ttk.Label(staff_add, text='Password:', width = 14)
     password_label.grid(column = 0, row = 6, padx = 2, pady = 2)
-    password_entry = tk.Entry(staff_add)
+    password_entry = ttk.Entry(staff_add)
     password_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
 
-    is_admin_button = tk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0, width = 8)
+    is_admin_button = ttk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0, width = 8)
     is_admin_button.grid(column = 3, row = 5, columnspan = 2, padx = 2, pady = 2)
 
-    staffid_label = tk.Label(staff_add, text='Staff ID: ' + str(next_staffid))
+    staffid_label = ttk.Label(staff_add, text='Staff ID: ' + str(next_staffid))
     staffid_label.grid(column = 3, row = 6, columnspan = 2, padx = 2, pady = 2)
 
     if list_items != 0:
@@ -216,48 +217,48 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     is_ready = tk.IntVar()
     
     # Inserts the buttons into the program
-    a_back_button = tk.Button(comp_add, text = "Back", command = lambda: comp_back_button(IsAdmin, comp_add))
+    a_back_button = ttk.Button(comp_add, text = "Back", command = lambda: comp_back_button(IsAdmin, comp_add))
     a_back_button.grid(column = 4, row = 0, padx = 2, pady = 2, sticky = "E")
 
-    save_button = tk.Button(comp_add, text = "Save", command = lambda: save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
+    save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
     save_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
     
-    serial_label = tk.Label(comp_add, text='Serial:', width = 15)
+    serial_label = ttk.Label(comp_add, text='Serial:', width = 15)
     serial_label.grid(column = 0, row = 0, padx = 2, pady = 2)
-    serial_entry = tk.Entry(comp_add)
+    serial_entry = ttk.Entry(comp_add)
     serial_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
 
-    problem_label = tk.Label(comp_add, text='Problem:', width = 15)
+    problem_label = ttk.Label(comp_add, text='Problem:', width = 15)
     problem_label.grid(column = 0, row = 1, padx = 2, pady = 2)
-    problem_entry = tk.Entry(comp_add)
+    problem_entry = ttk.Entry(comp_add)
     problem_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
 
-    custname_label = tk.Label(comp_add, text='Customer Name:', width = 15)
+    custname_label = ttk.Label(comp_add, text='Customer Name:', width = 15)
     custname_label.grid(column = 0, row = 3, padx = 2, pady = 2)
-    custname_entry = tk.Entry(comp_add)
+    custname_entry = ttk.Entry(comp_add)
     custname_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
 
-    custphone_label = tk.Label(comp_add, text='Customer Phone:', width = 15)
+    custphone_label = ttk.Label(comp_add, text='Customer Phone:', width = 15)
     custphone_label.grid(column = 0, row = 4, padx = 2, pady = 2)
-    custphone_entry = tk.Entry(comp_add)
+    custphone_entry = ttk.Entry(comp_add)
     custphone_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
     
-    repairid_label = tk.Label(comp_add, text='Repairer ID:', width = 15)
+    repairid_label = ttk.Label(comp_add, text='Repairer ID:', width = 15)
     repairid_label.grid(column = 0, row = 5, padx = 2, pady = 2)
-    repairid_entry = tk.Entry(comp_add)
+    repairid_entry = ttk.Entry(comp_add)
     repairid_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
 
-    collection_label = tk.Label(comp_add, text='Collection Date:', width = 15)
+    collection_label = ttk.Label(comp_add, text='Collection Date:', width = 15)
     collection_label.grid(column = 0, row = 6, padx = 2, pady = 2)
-    collection_entry = tk.Entry(comp_add)
+    collection_entry = ttk.Entry(comp_add)
     collection_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
     
     # Creates a button if the current user is an admin
     if IsAdmin == 1:
-        is_scrap_button = tk.Checkbutton(comp_add, text='Is Scrap?', variable = is_scrap, onvalue = 1, offvalue = 0, width = 8)
+        is_scrap_button = ttk.Checkbutton(comp_add, text='Is Scrap?', variable = is_scrap, onvalue = 1, offvalue = 0, width = 8)
         is_scrap_button.grid(column = 3, row = 5, columnspan = 2, padx = 2, pady = 2)
 
-    is_ready_button = tk.Checkbutton(comp_add, text='Ready?', variable = is_ready, onvalue = 1, offvalue = 0, width = 8)
+    is_ready_button = ttk.Checkbutton(comp_add, text='Ready?', variable = is_ready, onvalue = 1, offvalue = 0, width = 8)
     is_ready_button.grid(column = 3, row = 6, columnspan = 2, padx = 2, pady = 2)
 
     if list_items != 0:
@@ -282,7 +283,7 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
     list_items.title('List of items')
     list_items.resizable(width=False, height=False)
     
-    a_back_button = tk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
+    a_back_button = ttk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
     a_back_button.grid(column = 0, row = 0, padx=2, pady=2, sticky = "E")
     
     import csv
@@ -326,9 +327,9 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 
         listbox = tk.Listbox(list_items, listvariable=list_variable)
         listbox.grid(column = 0, row = 1, padx=2, pady=2)
-        itemselect = tk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list, full_computers_list))
+        itemselect = ttk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list, full_computers_list))
         itemselect.grid(column = 0, row = 2, padx=2, pady=2, sticky = "W")
-        delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, full_computers_list))
+        delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, full_computers_list))
         delitem.grid(column = 0, row = 2, padx=2, pady=2, sticky = "E")
     
     else:
@@ -348,9 +349,9 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 
         listbox = tk.Listbox(list_items, listvariable=list_variable)
         listbox.grid(column = 0, row = 1, padx=2, pady=2)
-        itemselect = tk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, main_menu, list_items, listbox, staff_list))
+        itemselect = ttk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, main_menu, list_items, listbox, staff_list))
         itemselect.grid(column = 0, row = 2, padx=2, pady=2, sticky = "W")
-        delitem = tk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, staff_list))
+        delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, staff_list))
         delitem.grid(column = 0, row = 2, padx=2, pady=2, sticky = "E")
 
     list_items.mainloop()
@@ -382,33 +383,33 @@ def main_menu(IsAdmin):
     main_menu.resizable(width=False, height=False)
     
     # Inserts the buttons into the menu
-    button_logout = tk.Button(main_menu, text = "Logout", command = lambda: logout(main_menu))
+    button_logout = ttk.Button(main_menu, text = "Logout", command = lambda: logout(main_menu))
     button_logout.grid(row = 0, column = 0, padx = 2, pady = 2, sticky = "E")
 
-    button_comp_add = tk.Button(main_menu, text = "Add Computer (Repair/Scrap)", command = lambda: comp_add(IsAdmin, main_menu), width = 25)
+    button_comp_add = ttk.Button(main_menu, text = "Add Computer (Repair/Scrap)", command = lambda: comp_add(IsAdmin, main_menu), width = 25)
     button_comp_add.grid(row = 1, column = 0, padx = 2, pady = 2, sticky = "W")
 
-    button_list_bookings = tk.Button(main_menu, text = "List Bookings", command = lambda: list_items(IsAdmin, main_menu, comp_r = "1"), width = 25)
+    button_list_bookings = ttk.Button(main_menu, text = "List Bookings", command = lambda: list_items(IsAdmin, main_menu, comp_r = "1"), width = 25)
     button_list_bookings.grid(row = 2, column = 0, padx = 2, pady = 2)
 
     # If the account is an admin, insert the real buttons into the program. If not, replace them with buttons displaying an error
     if IsAdmin == 1:
-        button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: staff_add(IsAdmin, main_menu), width = 25)
+        button_staff_add = ttk.Button(main_menu, text = "Staff Modification", command = lambda: staff_add(IsAdmin, main_menu), width = 25)
         button_staff_add.grid(row = 3, column = 0, padx = 2, pady = 2)
 
-        button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: list_items(IsAdmin, main_menu, comp_s = "1"), width = 25)
+        button_list_bookings = ttk.Button(main_menu, text = "Scrap Listings", command = lambda: list_items(IsAdmin, main_menu, comp_s = "1"), width = 25)
         button_list_bookings.grid(row = 4, column = 0, padx = 2, pady = 2)
 
-        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"), width = 25)
+        button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"), width = 25)
         button_list_staff.grid(row = 5, column = 0, padx = 2, pady = 2)
     else:
-        button_staff_add = tk.Button(main_menu, text = "Staff Modification", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_staff_add = ttk.Button(main_menu, text = "Staff Modification", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
         button_staff_add.grid(row = 6, column = 0, padx = 2, pady = 2)
 
-        button_list_bookings = tk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_list_bookings = ttk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
         button_list_bookings.grid(row = 7, column = 0, padx = 2, pady = 2)
 
-        button_list_staff = tk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
         button_list_staff.grid(row = 8, column = 0, padx = 2, pady = 2)
 
     main_menu.mainloop()
@@ -429,19 +430,19 @@ def login():
 
     
     # Creates the input boxes for Username and Passowrd
-    company_label = tk.Label(login_prompt, text='PC4U Login', font=("Helvetica", 20))
+    company_label = ttk.Label(login_prompt, text='PC4U Login', font=("Helvetica", 20))
     company_label.grid(column = 0, row = 0, padx = 2, pady = 4, columnspan = 2)
-    username_label = tk.Label(login_prompt, text='Username:', width = 9)
+    username_label = ttk.Label(login_prompt, text='Username:', width = 9)
     username_label.grid(column = 0, row = 1, sticky = "W", padx = 2, pady = 2)
-    username = tk.Entry(login_prompt)
+    username = ttk.Entry(login_prompt)
     username.grid(column = 1, row = 1, sticky = "W", padx = 2, pady = 2)
-    password_label = tk.Label(login_prompt, text='Password:', width = 9)
+    password_label = ttk.Label(login_prompt, text='Password:', width = 9)
     password_label.grid(column = 0, row = 2, sticky = "W", padx = 2, pady = 2)
-    password = tk.Entry(login_prompt, show="*")
+    password = ttk.Entry(login_prompt, show="*")
     password.grid(column = 1, row = 2, sticky = "W", padx = 2, pady = 2)
     
     # Creates the login button, which starts attempt_login()
-    button_login = tk.Button(login_prompt, text = "Login", command = lambda: attempt_login(username, password, login_prompt))
+    button_login = ttk.Button(login_prompt, text = "Login", command = lambda: attempt_login(username, password, login_prompt))
     button_login.grid(column = 0, row = 3, padx = 2, pady = 2, columnspan = 2)
     
     login_prompt.mainloop()
