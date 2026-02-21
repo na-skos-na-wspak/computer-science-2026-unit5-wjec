@@ -10,27 +10,53 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
     if serial == "":
         messagebox.showerror("Error", "There is no serial specified.")
         return
+
     problem = problem_entry.get()
     if problem == "":
         messagebox.showerror("Error", "There is no problem specified.")
         return
+
     custname = custname_entry.get()
     if custname == "":
         messagebox.showerror("Error", "There is no customer name specified.")
         return
+    i = any(char.isdigit() for char in custname)
+    if i:
+        messagebox.showerror("Error", "There should be no numbers in the customers name.")
+        return
+
     custphone = custphone_entry.get()
     if custphone == "":
         messagebox.showerror("Error", "There is no customer phone number specified.")
         return
+    try:
+        i = int(custphone)
+    except:
+        messagebox.showerror("Error", "There should not be any letters in the customer phone number.")
+        return
+
     repairid = repairid_entry.get()
     if repairid == "":
-        messagebox.showerror("Error", "There is no data within the repair id entry.")
+        messagebox.showerror("Error", "There is no data within the repairer id entry.")
         return
+    try:
+        i = int(repairid)
+    except:
+        messagebox.showerror("Error", "There should not be any letters in the repairers id.")
+        return
+
     is_s = is_scrap.get()
     is_r = is_ready.get()
     collection_e = collection_entry.get()
     if collection_e == "":
         messagebox.showerror("Error", "There is no data within the collection entry.")
+        return
+    from datetime import datetime
+    format = "%d/%m/%Y"
+    try:
+        i = bool(datetime.strptime(collection_e, format))
+    except:
+        messagebox.showerror("Error", "Date is not in DD/MM/YY.")
         return
 
     save_list = [serial, problem, custname, custphone, repairid, is_s, is_r, collection_e]
@@ -113,11 +139,16 @@ def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_
 
 def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     menu_position = "staff_add"
-    if staff_list != 0:
-        index = listbox.curselection()[0]
-        list_items.destroy()
+
+    if no_staff != 1:
+        if staff_list != 0:
+            index = listbox.curselection()[0]
+            list_items.destroy()
+        else:
+            main_menu.destroy()
     else:
-        main_menu.destroy()
+        no_staff.destroy()
+
 
     staff_add = tk.Tk()
     staff_add.title('Staff Modification')
@@ -415,19 +446,16 @@ def main_menu(IsAdmin):
     main_menu.mainloop()
 
 def login():
+    try:
+        import csv
+        Staff_list = list(csv.reader(open("staff.csv")))
+    except:
+        no_staff()
+
     login_prompt = tk.Tk()
     login_prompt.geometry('250x140')
     login_prompt.resizable(False, False)
     login_prompt.title('Login')
-
-    try:
-        import csv
-        Staff_list = list(csv.reader(open("staff.csv")))
-        if Staff_list == []:
-            print("There is no staff")
-    except:
-        print("Loaded")
-
     
     # Creates the input boxes for Username and Passowrd
     company_label = ttk.Label(login_prompt, text='PC4U Login', font=("Helvetica", 20))
@@ -476,6 +504,112 @@ def attempt_login(username, password, login_prompt):
     # Show an errorbox if not
     else:
         messagebox.showerror("Login Failed", "Invalid username or password")
+
+def no_staff():
+    no_staff = tk.Tk()
+    no_staff.resizable(False, False)
+    no_staff.title('Error')
+    
+    banner_label = ttk.Label(no_staff, text='Halt!', font=("Helvetica", 20))
+    banner_label.grid(column = 0, row = 0, padx = 2, pady = 4)
+    banner2_label = ttk.Label(no_staff, text='No staff file has been found.\nYou will be given the option\nto create one now.\n\nThis account will be for the admin/owner.\n\nPress the OK button to continue.')
+    banner2_label.grid(column = 0, row = 1, padx = 2, pady = 2)
+
+    staff_start_button = ttk.Button(no_staff, text='OK', command = lambda: (newuse(no_staff)))
+    staff_start_button.grid(column = 0, row = 2, padx = 2, pady = 2)
+    
+    no_staff.mainloop()
+
+def newuse(no_staff):
+    no_staff.destroy()
+    newuse = tk.Tk()
+    newuse.resizable(False, False)
+    newuse.title('Add a new owner.')
+    
+    # Inserts the buttons into the menu
+    save_button = ttk.Button(newuse, text = "Save", command = lambda: newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry))
+    save_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
+    
+    fname_label = ttk.Label(newuse, text='First Name:', width = 14)
+    fname_label.grid(column = 0, row = 0, padx = 2, pady = 2)
+    fname_entry = ttk.Entry(newuse)
+    fname_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
+    
+    sname_label = ttk.Label(newuse, text='Second Name:', width = 14)
+    sname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
+    sname_entry = ttk.Entry(newuse)
+    sname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
+
+    username_label = ttk.Label(newuse, text='Username:', width = 14)
+    username_label.grid(column = 0, row = 2, padx = 2, pady = 2)
+    username_entry = ttk.Entry(newuse)
+    username_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
+    
+    email_label = ttk.Label(newuse, text='Email:', width = 14)
+    email_label.grid(column = 0, row = 3, padx = 2, pady = 2)
+    email_entry = ttk.Entry(newuse)
+    email_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
+    
+    phonenum_label = ttk.Label(newuse, text='Phone Number:', width = 14)
+    phonenum_label.grid(column = 0, row = 4, padx = 2, pady = 2)
+    phonenum_entry = ttk.Entry(newuse)
+    phonenum_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
+
+    dob_label = ttk.Label(newuse, text='Date Of Birth:', width = 14)
+    dob_label.grid(column = 0, row = 5, padx = 2, pady = 2)
+    dob_entry = ttk.Entry(newuse)
+    dob_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
+
+    password_label = ttk.Label(newuse, text='Password:', width = 14)
+    password_label.grid(column = 0, row = 6, padx = 2, pady = 2)
+    password_entry = ttk.Entry(newuse)
+    password_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
+
+    newuse.mainloop()
+
+def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry):
+    import csv
+    
+    # Gets all of the inputted fields
+    next_staffid = str(1)
+    username = username_entry.get()
+    if username == "":
+        messagebox.showerror("Error", "There is no data within the username entry.")
+        return
+    password = password_entry.get()
+    if password == "":
+        messagebox.showerror("Error", "There is no data within the password entry.")
+        return
+    fname = fname_entry.get()
+    if fname == "":
+        messagebox.showerror("Error", "There is no data within the first name entry.")
+        return
+    sname = sname_entry.get()
+    if sname == "":
+        messagebox.showerror("Error", "There is no data within the second name entry.")
+        return
+    email = email_entry.get()
+    if email == "":
+        messagebox.showerror("Error", "There is no data within the email entry.")
+        return
+    phonenum = phonenum_entry.get()
+    if phonenum == "":
+        messagebox.showerror("Error", "There is no data within the phone number entry.")
+        return
+    dob = dob_entry.get()
+    if dob == "":
+        messagebox.showerror("Error", "There is no data within the Date of Birth entry.")
+        return
+    is_a = str(1)
+
+    save_list = [next_staffid, username, password, fname, sname, email, phonenum, dob, is_a]
+
+    with open('staff.csv', 'w', newline='') as list:
+        writer = csv.writer(list)
+        writer.writerows(save_list)
+
+    # Shows a messagebox once saved
+    messagebox.showinfo("Saved", "The owner has been saved.")
 
 # Defines the back buttons for all of the seperate menus
 def comp_back_button(IsAdmin, comp_add):
