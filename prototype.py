@@ -56,7 +56,7 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
     try:
         i = bool(datetime.strptime(collection_e, format))
     except:
-        messagebox.showerror("Error", "Date is not in DD/MM/YY.")
+        messagebox.showerror("Error", "Date is not in DD/MM/YYYY.")
         return
 
     save_list = [serial, problem, custname, custphone, repairid, is_s, is_r, collection_e]
@@ -307,6 +307,13 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     comp_add.mainloop()
 
 def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
+    import csv
+    try:
+        open('computers.csv', mode ='r')
+    except:
+        messagebox.showerror("Error", "There are no computers added yet.")
+        return
+
     main_menu.destroy()
     menu_position = "list_items"
 
@@ -317,7 +324,6 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
     a_back_button = ttk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
     a_back_button.grid(column = 0, row = 0, padx=2, pady=2, sticky = "E")
     
-    import csv
     
     if staff_list_b == "":
         full_computers_list = list(csv.reader(open("computers.csv")))
