@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 
-def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
+def save_comp(serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
     import csv
 
     # Gets all of the inputted fields
@@ -16,23 +16,9 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
         messagebox.showerror("Error", "There is no problem specified.")
         return
 
-    custname = custname_entry.get()
+    cust_sel = cust_sel_entry.get()
     if custname == "":
-        messagebox.showerror("Error", "There is no customer name specified.")
-        return
-    i = any(char.isdigit() for char in custname)
-    if i:
-        messagebox.showerror("Error", "There should be no numbers in the customers name.")
-        return
-
-    custphone = custphone_entry.get()
-    if custphone == "":
-        messagebox.showerror("Error", "There is no customer phone number specified.")
-        return
-    try:
-        i = int(custphone)
-    except:
-        messagebox.showerror("Error", "There should not be any letters in the customer phone number.")
+        messagebox.showerror("Error", "There is no customer specified.")
         return
 
     repairid = repairid_entry.get()
@@ -55,7 +41,7 @@ def save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repa
         messagebox.showerror("Error", "Date is not in DD/MM/YYYY.")
         return
 
-    save_list = [serial, problem, custname, custphone, repairid, is_s, is_r, collection_e]
+    save_list = [serial, problem, cust_sel, repairid, is_s, is_r, collection_e]
     
     if full_computers_list != 0:
         for i in range(len(full_computers_list)):
@@ -260,6 +246,60 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
 
     staff_add.mainloop()
 
+def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
+    import csv
+
+    # Gets all of the inputted fields
+    custname = custname_entry.get()
+    if custname == "":
+        messagebox.showerror("Error", "There is no customer name.")
+        return
+    i = any(char.isdigit() for char in custname)
+    if i:
+        messagebox.showerror("Error", "There should be no numbers in the customers name.")
+        return
+
+    custphone = custphone_entry.get()
+    if custphone == "":
+        messagebox.showerror("Error", "There is no customer phone number.")
+        return
+    try:
+        i = int(custphone)
+    except:
+        messagebox.showerror("Error", "There should not be any letters in the customer phone number.")
+        return
+
+    save_list = [custname, custphone]
+    
+    with open('customers.csv', 'a', newline='') as list:
+        writer = csv.writer(list)
+        writer.writerow(save_list)
+    
+    # Shows a messagebox once saved
+    cust_sel_entry['values'] = [[custname, custphone]]
+    messagebox.showinfo("Saved", "Given customer was saved.")
+    cust_add.destroy()
+
+def cust_add(cust_sel_entry):
+    cust_add = tk.Tk()
+    cust_add.title('Add new customer')
+    cust_add.resizable(width=False, height=False)
+
+    custname_label = ttk.Label(cust_add, text='Customer Name:', width = 15)
+    custname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
+    custname_entry = ttk.Entry(cust_add)
+    custname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
+
+    custphone_label = ttk.Label(cust_add, text='Customer Phone:', width = 15)
+    custphone_label.grid(column = 0, row = 2, padx = 2, pady = 2)
+    custphone_entry = ttk.Entry(cust_add)
+    custphone_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
+
+    save_button = ttk.Button(cust_add, text = "Save", command = lambda: cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry))
+    save_button.grid(column = 1, row = 3, padx = 2, pady = 2, sticky = 'E')
+
+    cust_add.mainloop()
+
 def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, full_computers_list=0):
     import csv
     if list_items != 0:
@@ -283,8 +323,15 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     is_ready = tk.IntVar()
     selrepairid = 0
     current_var = tk.StringVar()
+    current_var2 = tk.StringVar()
     
     staff_list = list(csv.reader(open("staff.csv")))
+
+    try:
+        cust_list = list(csv.reader(open("customers.csv")))
+    except:
+        pass
+
     print(staff_list)
 
     condensed_list = [[0 for j in range(2)] for i in range(len(staff_list))]
@@ -300,28 +347,35 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     a_back_button = ttk.Button(comp_add, text = "Back", command = lambda: comp_back_button(IsAdmin, comp_add))
     a_back_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
 
-    save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(serial_entry, problem_entry, custname_entry, custphone_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
+    save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
     save_button.grid(column = 3, row = 1, padx = 2, pady = 2, sticky = "E")
     
-    serial_label = ttk.Label(comp_add, text='Serial:', width = 15)
+    serial_label = ttk.Label(comp_add, text = 'Serial:', width = 15)
     serial_label.grid(column = 0, row = 0, padx = 2, pady = 2)
     serial_entry = ttk.Entry(comp_add)
     serial_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
 
-    problem_label = ttk.Label(comp_add, text='Problem:', width = 15)
+    problem_label = ttk.Label(comp_add, text = 'Problem:', width = 15)
     problem_label.grid(column = 0, row = 1, padx = 2, pady = 2)
     problem_entry = ttk.Entry(comp_add)
     problem_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
 
-    custname_label = ttk.Label(comp_add, text='Customer Name:', width = 15)
-    custname_label.grid(column = 0, row = 3, padx = 2, pady = 2)
-    custname_entry = ttk.Entry(comp_add)
-    custname_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
+#   custname_label = ttk.Label(comp_add, text='Customer Name:', width = 15)
+#   custname_label.grid(column = 0, row = 3, padx = 2, pady = 2)
+#   custname_entry = ttk.Entry(comp_add)
+#   custname_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
 
-    custphone_label = ttk.Label(comp_add, text='Customer Phone:', width = 15)
-    custphone_label.grid(column = 0, row = 4, padx = 2, pady = 2)
-    custphone_entry = ttk.Entry(comp_add)
-    custphone_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
+#   custphone_label = ttk.Label(comp_add, text='Customer Phone:', width = 15)
+#   custphone_label.grid(column = 0, row = 4, padx = 2, pady = 2)
+#   custphone_entry = ttk.Entry(comp_add)
+#   custphone_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
+
+    add_new_cust = ttk.Button(comp_add, text = 'Add new customer', command = lambda: cust_add(cust_sel_entry), width = 20)
+    add_new_cust.grid(column = 0, row = 3, padx = 2, pady = 2, columnspan = 2, sticky = 'E')
+    cust_sel_label = ttk.Label(comp_add, text = 'Customer: ', width = 15)
+    cust_sel_label.grid(column = 0, row = 4, padx = 2, pady = 2)
+    cust_sel_entry = ttk.Combobox(comp_add, textvariable = current_var2, width = 19)
+    cust_sel_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
     
     repairid_label = ttk.Label(comp_add, text='Repairer ID:', width = 15)
     repairid_label.grid(column = 0, row = 5, padx = 2, pady = 2)
@@ -354,6 +408,10 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
         collection_entry.insert(0, computers_list[index][7])
 
     repairid_entry['values'] = (condensed_list)
+    try:
+        cust_sel_entry['values'] = (cust_list)
+    except:
+        pass
 
     comp_add.mainloop()
 
