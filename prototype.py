@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
+import csv
 
-def save_comp(serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
-    import csv
-
+def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
     # Gets all of the inputted fields
     serial = serial_entry.get()
     if serial == "":
@@ -17,7 +16,7 @@ def save_comp(serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_sc
         return
 
     cust_sel = cust_sel_entry.get()
-    if custname == "":
+    if cust_sel == "":
         messagebox.showerror("Error", "There is no customer specified.")
         return
 
@@ -62,9 +61,10 @@ def save_comp(serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_sc
     
     # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given computer was saved.")
+    comp_add.destroy()
+    main_menu(IsAdmin)
 
-def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list=list()):
-    import csv
+def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list=list()):
     
     # Gets all of the inputted fields
     username = username_entry.get()
@@ -156,6 +156,8 @@ def save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_
 
     # Shows a messagebox once saved
     messagebox.showinfo("Saved", "Given user was saved.")
+    staff_add.destroy()
+    main_menu(IsAdmin)
 
 def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     menu_position = "staff_add"
@@ -175,7 +177,6 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     staff_add.resizable(width=False, height=False)
 
     # Reads from the staff file to check how many users there are already, to choose a new ID for the user being created
-    import csv
     current_staff_list = list(csv.reader(open("staff.csv")))
     
     if list_items != 0:
@@ -189,7 +190,7 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     a_back_button = ttk.Button(staff_add, text = "Back", command = lambda: staff_back_button(IsAdmin, staff_add))
     a_back_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
 
-    save_button = ttk.Button(staff_add, text = "Save", command = lambda: save_staff(next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list))
+    save_button = ttk.Button(staff_add, text = "Save", command = lambda: save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list))
     save_button.grid(column = 3, row = 1, padx = 2, pady = 2, sticky = "E")
     
     fname_label = ttk.Label(staff_add, text='First Name:', width = 14)
@@ -247,8 +248,6 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     staff_add.mainloop()
 
 def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
-    import csv
-
     # Gets all of the inputted fields
     custname = custname_entry.get()
     if custname == "":
@@ -301,9 +300,12 @@ def cust_add(cust_sel_entry):
     cust_add.mainloop()
 
 def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, full_computers_list=0):
-    import csv
     if list_items != 0:
-        index = listbox.curselection()[0]
+        try:
+            index = listbox.curselection()[0]
+        except:
+            messagebox.showerror("Error", "You have not selected a computer.")
+            return
         list_items.destroy()
     else:
         main_menu.destroy()
@@ -347,7 +349,7 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     a_back_button = ttk.Button(comp_add, text = "Back", command = lambda: comp_back_button(IsAdmin, comp_add))
     a_back_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
 
-    save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
+    save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
     save_button.grid(column = 3, row = 1, padx = 2, pady = 2, sticky = "E")
     
     serial_label = ttk.Label(comp_add, text = 'Serial:', width = 15)
@@ -398,14 +400,13 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     if list_items != 0:
         serial_entry.insert(0, computers_list[index][0])
         problem_entry.insert(0, computers_list[index][1])
-        custname_entry.insert(0,computers_list[index][2])
-        custphone_entry.insert(0, computers_list[index][3])
-        repairid_entry.insert(0, computers_list[index][4])
-        if computers_list[index][5] == "1":
+        cust_sel_entry.insert(0,computers_list[index][2])
+        repairid_entry.insert(0, computers_list[index][3])
+        if computers_list[index][4] == "1":
            is_scrap_button.invoke()
-        if computers_list[index][6] == '1':
+        if computers_list[index][5] == '1':
            is_ready_button.invoke()
-        collection_entry.insert(0, computers_list[index][7])
+        collection_entry.insert(0, computers_list[index][6])
 
     repairid_entry['values'] = (condensed_list)
     try:
@@ -416,8 +417,6 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     comp_add.mainloop()
 
 def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
-    import csv
-
     if staff_list_b == "":
         try:
             open('computers.csv', mode ='r')
@@ -446,15 +445,15 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
         if comp_r == "1":
             print("Works Here")
             for i in range(len(computers_list)):
-                print(computers_list[i][5])
-                if computers_list[i][5] == "1":
+                print(computers_list[i][4])
+                if computers_list[i][4] == "1":
                     poppable_values.append(i) 
 
         if comp_s == "1":
             print("Works Here")
             for i in range(len(computers_list)):
-                print(computers_list[i][5])
-                if computers_list[i][5] == "0":
+                print(computers_list[i][4])
+                if computers_list[i][4] == "0":
                     poppable_values.append(i) 
 
         for i in sorted(poppable_values, reverse=True):
@@ -468,15 +467,16 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
             #0 denotes the serial
             #2 denotes the name of the person who owns the computer
             condensed_list[i][0] = computers_list[i][0]
-            condensed_list[i][1] = computers_list[i][2]
+            condensed_list[i][1] = str(computers_list[i][2])
 
         list_variable = tk.Variable(value = condensed_list)
+        do_what = 0
 
-        listbox = tk.Listbox(list_items, listvariable=list_variable)
+        listbox = tk.Listbox(list_items, listvariable=list_variable, width = 40)
         listbox.grid(column = 0, row = 1, padx = 8, pady = 2)
         itemselect = ttk.Button(list_items, text = "Select", command = lambda: comp_add(IsAdmin, main_menu, list_items, listbox, computers_list, full_computers_list))
         itemselect.grid(column = 0, row = 2, padx=2, pady=2, sticky = "W")
-        delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, full_computers_list))
+        delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, list_items, listbox, full_computers_list, do_what))
         delitem.grid(column = 0, row = 2, padx=2, pady=2, sticky = "E")
     
     else:
@@ -493,31 +493,83 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
             condensed_list[i][1] = staff_list[i][1]
 
         list_variable = tk.Variable(value = condensed_list)
-        print(list_variable.get)
+        do_what = 1
 
-        listbox = tk.Listbox(list_items, listvariable=list_variable)
+        listbox = tk.Listbox(list_items, listvariable=list_variable, width = 40)
         listbox.grid(column = 0, row = 1, padx = 8, pady = 2)
-        itemselect = ttk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, main_menu, list_items, listbox, staff_list))
+        itemselect = ttk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, list_items, listbox, staff_list))
         itemselect.grid(column = 0, row = 2, padx = 2, pady = 2, sticky = "W")
-        delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, main_menu, list_items, listbox, staff_list))
+        delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, list_items, listbox, staff_list, do_what))
         delitem.grid(column = 0, row = 2, padx = 2, pady = 2, sticky = "E")
 
     list_items.mainloop()
 
-def delete_item(IsAdmin, main_menu, list_items, listbox, computers_list):
-    index_value = -1
-    
-    serial = serial_entry.get()
+def list_cust(IsAdmin, main_menu):
+    try:
+        open('staff.csv', mode ='r')
+    except:
+        messagebox.showerror("Error", "There are no customers added yet.")
+        return
 
-    for i in range(7):
-        if serial == computers_list[i][0]:
-            index_value = i
-            print(index_value)
+    main_menu.destroy()
+    menu_position = "list_cust"
+
+    list_items = tk.Tk()
+    list_items.title('List of items')
+    list_items.resizable(width=False, height=False)
     
-    if index_value != -1:
-        with open('computers.csv', 'w+', newline='') as list:
+    a_back_button = ttk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
+    a_back_button.grid(column = 0, row = 0, padx=2, pady=2, sticky = "E")
+    
+    customers_list = list(csv.reader(open("customers.csv")))
+
+    list_variable = tk.Variable(value = customers_list)
+
+    listbox = tk.Listbox(list_items, listvariable=list_variable, width = 40)
+    listbox.grid(column = 0, row = 1, padx = 8, pady = 2)
+    delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, list_items, listbox, customers_list, do_what = 2))
+    delitem.grid(column = 0, row = 2, padx=2, pady=2, sticky = "E")
+
+
+def delete_item(IsAdmin, list_items, listbox, selected_list_before, do_what):
+    print(selected_list_before)
+    index = listbox.curselection()[0]
+    to_delete = selected_list_before[index][0]
+
+    for i in range(len(selected_list_before)):
+        if to_delete == selected_list_before[i][0]:
+            index = i
+    del selected_list_before[index]
+        
+    if do_what == 0:
+        with open('computers.csv', 'w', newline='') as list:
             writer = csv.writer(list)
-            writer.strip(index_value)
+            writer.writerows(selected_list_before)
+
+        messagebox.showinfo("Item Deleted", "The selected item in the list was deleted.")
+        list_items.destroy()
+        main_menu(IsAdmin)
+
+    elif do_what == 1:
+        if to_delete == "1":
+            messagebox.showerror("Error", "You cannot delete the owner account.\nIf you mean to change any of its\ninfo, please edit it instead.")
+        else:
+            with open('staff.csv', 'w', newline='') as list:
+                writer = csv.writer(list)
+                writer.writerows(selected_list_before)
+
+            messagebox.showinfo("Item Deleted", "The selected item in the list was deleted.")
+            list_items.destroy()
+            main_menu(IsAdmin)
+
+    elif do_what == 2:
+        with open('customers.csv', 'w', newline='') as list:
+            writer = csv.writer(list)
+            writer.writerows(selected_list_before)
+
+        messagebox.showinfo("Item Deleted", "The selected item in the list was deleted.")
+        list_items.destroy()
+        main_menu(IsAdmin)
 
 # Destroys the main menu and returns to the login
 def logout(main_menu):
@@ -532,7 +584,7 @@ def main_menu(IsAdmin):
     
     # Inserts the buttons into the menu
     button_logout = ttk.Button(main_menu, text = "Logout", command = lambda: logout(main_menu))
-    button_logout.grid(row = 0, column = 0, padx = 4, pady = 4, sticky = "E")
+    button_logout.grid(row = 0, column = 0, padx = 4, pady = 2, sticky = "E")
 
     button_comp_add = ttk.Button(main_menu, text = "Add Computer (Repair/Scrap)", command = lambda: comp_add(IsAdmin, main_menu), width = 25)
     button_comp_add.grid(row = 1, column = 0, padx = 4, pady = 4, sticky = "W")
@@ -540,31 +592,33 @@ def main_menu(IsAdmin):
     button_list_bookings = ttk.Button(main_menu, text = "List Bookings", command = lambda: list_items(IsAdmin, main_menu, comp_r = "1"), width = 25)
     button_list_bookings.grid(row = 2, column = 0, padx = 4, pady = 2)
 
+    customers_list = ttk.Button(main_menu, text = "List Customers", command = lambda: list_cust(IsAdmin, main_menu), width =25)
+    customers_list.grid(row = 3, column = 0, padx = 4, pady = 2)
+
     # If the account is an admin, insert the real buttons into the program. If not, replace them with buttons displaying an error
     if IsAdmin == 1:
-        button_staff_add = ttk.Button(main_menu, text = "Staff Modification", command = lambda: staff_add(IsAdmin, main_menu), width = 25)
-        button_staff_add.grid(row = 3, column = 0, padx = 4, pady = 2)
+        button_staff_add = ttk.Button(main_menu, text = "Add Staff", command = lambda: staff_add(IsAdmin, main_menu), width = 25)
+        button_staff_add.grid(row = 4, column = 0, padx = 4, pady = 2)
 
         button_list_bookings = ttk.Button(main_menu, text = "Scrap Listings", command = lambda: list_items(IsAdmin, main_menu, comp_s = "1"), width = 25)
-        button_list_bookings.grid(row = 4, column = 0, padx = 4, pady = 2)
+        button_list_bookings.grid(row = 5, column = 0, padx = 4, pady = 2)
 
         button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"), width = 25)
-        button_list_staff.grid(row = 5, column = 0, padx = 4, pady = 2)
+        button_list_staff.grid(row = 6, column = 0, padx = 4, pady = 2)
     else:
-        button_staff_add = ttk.Button(main_menu, text = "Staff Modification", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
-        button_staff_add.grid(row = 6, column = 0, padx = 4, pady = 2)
+        button_staff_add = ttk.Button(main_menu, text = "Add Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_staff_add.grid(row = 4, column = 0, padx = 4, pady = 2)
 
         button_list_bookings = ttk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
-        button_list_bookings.grid(row = 7, column = 0, padx = 4, pady = 2)
+        button_list_bookings.grid(row = 5, column = 0, padx = 4, pady = 2)
 
         button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
-        button_list_staff.grid(row = 8, column = 0, padx = 4, pady = 2)
+        button_list_staff.grid(row = 6, column = 0, padx = 4, pady = 2)
 
     main_menu.mainloop()
 
 def login():
     try:
-        import csv
         Staff_list = list(csv.reader(open("staff.csv")))
 
         login_prompt = tk.Tk()
@@ -600,7 +654,6 @@ def attempt_login(username, password, login_prompt):
     TempPosition = -1
 
     # Reads from staff.csv
-    import csv
     Staff_list = list(csv.reader(open("staff.csv")))
 
     # Searches through the read file to see see whether usename matches any of the items
@@ -685,8 +738,6 @@ def newuse(no_staff):
     newuse.mainloop()
 
 def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, newuse):
-    import csv
-
     fname = fname_entry.get()
     if fname == "":
         messagebox.showerror("Error", "There is no data within the first name entry.")

@@ -1,7 +1,2 @@
-1,atest1,btest1,1234,1234,1,1,ctest1
-2,atest2,btest2,1234,1234,0,1,ctest2
-3,atest3,btest3,1234,1234,1,1,ctest3
-4,atest4,btest4,1234,1234,0,1,ctest4
-5,atest5,btest5,1234,1234,1,1,ctest5
-2143124214,Doesn't turn on,Delyth,12412421,2,0,0,12/12/2026
-294812,Doesn't turn on,Dave,15912850,4 userd,0,0,14/12/2026
+123456789,Doesn't turn on,Customer 123456789,1 usera,0,0,12/12/2030
+987654321,Doesn't have a CPU,Customer 123456789,1 usera,0,1,12/12/2025
