@@ -4,8 +4,9 @@ from tkinter import ttk
 import csv
 
 def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
-    # Gets all of the inputted fields
+    # Gets all of the input fields
     serial = serial_entry.get()
+    # Validates on each input field to check whether it is empty
     if serial == "":
         messagebox.showerror("Error", "There is no serial specified.")
         return
@@ -25,6 +26,7 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
         messagebox.showerror("Error", "There is no repairer selected.")
         return
 
+    # Gets the state for each of the two checkboxes and assigns them to a variable
     is_s = is_scrap.get()
     is_r = is_ready.get()
 
@@ -32,6 +34,7 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
     if collection_e == "":
         messagebox.showerror("Error", "There is no data within the collection entry.")
         return
+    # Uses datetime to validate the format of collection_e
     from datetime import datetime
     format = "%d/%m/%Y"
     try:
@@ -40,8 +43,12 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
         messagebox.showerror("Error", "Date is not in DD/MM/YYYY.")
         return
 
+    # Condenses all the collected variables into a array to be saved
     save_list = [serial, problem, cust_sel, repairid, is_s, is_r, collection_e]
     
+    # If full_computers_list doesn't equal 0:
+    # It will search for the serial previously added into the file and deletes it, in time for the new data
+    # It recreates the entire list and saves it
     if full_computers_list != 0:
         for i in range(len(full_computers_list)):
             if serial == full_computers_list[i][0]:
@@ -54,7 +61,7 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
             writer.writerows(full_computers_list)
 
     else:
-        # Appends to the staff file
+        # Else it just appends save_list to the end
         with open('computers.csv', 'a', newline='') as list:
             writer = csv.writer(list)
             writer.writerow(save_list)
@@ -66,8 +73,9 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
 
 def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list=list()):
     
-    # Gets all of the inputted fields
+    # Gets all of the input fields
     username = username_entry.get()
+    # Validates on each input field to check whether it is empty
     if username == "":
         messagebox.showerror("Error", "There is no data within the username entry.")
         return
@@ -76,6 +84,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     if password == "":
         messagebox.showerror("Error", "There is no data within the password entry.")
         return
+    # Validates the length of the field
     if len(password) <= 3:
         messagebox.showerror("Error", "Your password is too short.")
         return
@@ -84,6 +93,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     if fname == "":
         messagebox.showerror("Error", "There is no data within the first name entry.")
         return
+    # Validates whether the field has any numbers within it
     i = any(char.isdigit() for char in username)
     if i:
         messagebox.showerror("Error", "There should be no numbers in the first name.")
@@ -95,13 +105,14 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
         return
     i = any(char.isdigit() for char in username)
     if i:
-        messagebox.showerror("Error", "There should be no numbers in the first name.")
+        messagebox.showerror("Error", "There should be no numbers in the second name.")
         return
 
     email = email_entry.get()
     if email == "":
         messagebox.showerror("Error", "There is no data within the email entry.")
         return
+    # Searches to check whether the @ symbol is present in the field
     if '@' not in email:
         messagebox.showerror("Error", "This is not a valid email address.")
         return
@@ -110,6 +121,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     if phonenum == "":
         messagebox.showerror("Error", "There is no data within the phone number entry.")
         return
+    # Tries to cast the phone number as an integer, and exits if it cannot
     try:
         i = int(phonenum)
     except:
@@ -120,6 +132,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     if dob == "":
         messagebox.showerror("Error", "There is no data within the Date of Birth entry.")
         return
+    # Uses datetime to validate the format of collection_e
     from datetime import datetime
     format = "%d/%m/%Y"
     try:
@@ -128,15 +141,22 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
         messagebox.showerror("Error", "Date is not in DD/MM/YYYY.")
         return
 
+    # Gets the state of the checkbox and assigns it to a variable
     is_a = is_admin.get()
 
+    # Validates whether the "Is Admin?" checkbox was selected for the owner account (which is always the first user)
+    # This is required for use, as there has to be at least ONE administrator account to perform all tasks
     if next_staffid == "1":
         if is_a != 1:
             messagebox.showerror("Error", "Owner account has to be an admin.")
             return
 
+    # Condenses all the collected variables into a array to be saved
     save_list = [next_staffid, username, password, fname, sname, email, phonenum, dob, is_a]
-
+    
+    # If staff_list doesn't equal 0:
+    # It will search for the staff ID previously selected into the file and deletes it, in time for the new data
+    # It recreates the entire list and saves it
     if staff_list != 0:
         for i in range(len(staff_list)):
             if next_staffid == staff_list[i][0]:
@@ -149,7 +169,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
             writer.writerows(staff_list)
 
     else:
-        # Appends to the staff file
+        # Else it just appends save_list to the end
         with open('staff.csv', 'a', newline='') as list:
             writer = csv.writer(list)
             writer.writerow(save_list)
@@ -618,15 +638,15 @@ def main_menu(IsAdmin):
     main_menu.mainloop()
 
 def login():
+    # Attempts to read the staff.csv file, if it fails then it starts no_staff()
     try:
         Staff_list = list(csv.reader(open("staff.csv")))
 
         login_prompt = tk.Tk()
-        login_prompt.geometry('250x140')
         login_prompt.resizable(False, False)
         login_prompt.title('Login')
     
-        # Creates the input boxes for Username and Passowrd
+        # Creates the input boxes for Username and Password
         company_label = ttk.Label(login_prompt, text='PC4U Login', font=("Helvetica", 20))
         company_label.grid(column = 0, row = 0, padx = 2, pady = 4, columnspan = 2)
         username_label = ttk.Label(login_prompt, text='Username:', width = 9)
@@ -647,7 +667,7 @@ def login():
         no_staff()
 
 def attempt_login(username, password, login_prompt):
-    # Gets the inputted username and password
+    # Gets the input username and password
     TempUsername = str(username.get())
     TempPassword = str(password.get())
     # Sets TempPosition to check password associated with username later to a value 
@@ -656,7 +676,7 @@ def attempt_login(username, password, login_prompt):
     # Reads from staff.csv
     Staff_list = list(csv.reader(open("staff.csv")))
 
-    # Searches through the read file to see see whether usename matches any of the items
+    # Searches through the read file to see see whether username matches any of the items
     for i in range(len(Staff_list)):
         if TempUsername == Staff_list[i][1]:
             TempPosition = i
@@ -675,6 +695,7 @@ def attempt_login(username, password, login_prompt):
     else:
         messagebox.showerror("Login Failed", "Invalid username or password")
 
+# Used to initialise the program
 def no_staff():
     no_staff = tk.Tk()
     no_staff.resizable(False, False)
@@ -690,6 +711,7 @@ def no_staff():
     
     no_staff.mainloop()
 
+# Used to provide the owner a way to create a user
 def newuse(no_staff):
     no_staff.destroy()
     newuse = tk.Tk()
@@ -738,10 +760,14 @@ def newuse(no_staff):
     newuse.mainloop()
 
 def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, newuse):
+
+    # Gets all of the input fields
     fname = fname_entry.get()
+    # Validates on each input field to check whether it is empty
     if fname == "":
         messagebox.showerror("Error", "There is no data within the first name entry.")
         return
+    # Validates whether the field has any numbers within it
     i = any(char.isdigit() for char in fname)
     if i:
         messagebox.showerror("Error", "There should be no numbers in the first name.")
@@ -765,6 +791,7 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     if email == "":
         messagebox.showerror("Error", "There is no data within the email entry.")
         return
+    # Searches to check whether the @ symbol is present in the field
     if '@' not in email:
         messagebox.showerror("Error", "This is not a valid email address.")
         return
@@ -773,6 +800,7 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     if phonenum == "":
         messagebox.showerror("Error", "There is no data within the phone number entry.")
         return
+    # Tries to cast the phone number as an integer, and exits if it cannot
     try:
         i = int(phonenum)
     except:
@@ -783,6 +811,7 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     if dob == "":
         messagebox.showerror("Error", "There is no data within the Date of Birth entry.")
         return
+    # Uses datetime to validate the format of collection_e
     from datetime import datetime
     format = "%d/%m/%Y"
     try:
@@ -795,15 +824,19 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     if password == "":
         messagebox.showerror("Error", "There is no data within the password entry.")
         return
+    # Validates the length of the field
     if len(password) <= 3:
         messagebox.showerror("Error", "Your password is too short.")
         return
 
+    # Assigns and casts the owner as an admin account, and the first user
     is_a = str(1)
     next_staffid = str(1)
 
+    # Condenses all the collected variables into a array to be saved
     save_list = [next_staffid, username, password, fname, sname, email, phonenum, dob, is_a]
 
+    # Writes the owner to the new file
     with open('staff.csv', 'w', newline='') as list:
         writer = csv.writer(list)
         writer.writerow(save_list)
@@ -811,11 +844,11 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     # Shows a messagebox once saved
     messagebox.showinfo("Saved", "The owner has been saved.")
 
+    # Destroys the window and restarts the program
     newuse.destroy()
     login()
 
-
-# Defines the back buttons for all of the seperate menus
+# Defines the back buttons for all of the separate menus
 def comp_back_button(IsAdmin, comp_add):
         comp_add.destroy()
         main_menu(IsAdmin)
