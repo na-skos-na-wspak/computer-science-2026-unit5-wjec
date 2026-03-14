@@ -5,6 +5,37 @@ from tkinter.messagebox import askyesno
 from tkinter import ttk
 import csv
 
+def tk_style(window, listbox=0):
+
+    bg1 = '#0B0F0E'
+    fg1 = '#FFFFFF'
+    ac1 = '#E1D99B'
+
+    s = ttk.Style()
+    s.theme_use('clam')
+    s.configure('TLabel', background=bg1, foreground=fg1, font=('Helvetica', 11))
+
+    s.configure('TButton', background=bg1, foreground=fg1, font=('Helvetica', 11))
+    s.map('TButton', background=[('active',ac1)], foreground=[('active',bg1)])
+
+    s.configure('TEntry', fieldbackground=bg1, foreground=fg1, bordercolor=bg1, font=('Helvetica', 11))
+    s.map('TEntry', lightcolor=[('focus',ac1)])
+
+    s.configure('TCombobox', fieldbackground=bg1, background=ac1, foreground=fg1, font=('Helvetica', 11))
+    s.map('TCombobox', background=[('active',ac1)], fieldbackground=[('readonly',ac1)])
+    window.option_add('*TCombobox*Listbox*Background', bg1)
+    window.option_add('*TCombobox*Listbox*Foreground', fg1)
+    window.option_add('*TCombobox*Listbox*selectBackground', ac1)
+
+    s.configure('TCheckbutton', background=bg1, foreground=fg1, font=('Helvetica', 11))
+    s.map('TCheckbutton', background=[('active',bg1)])
+
+    if listbox != 0:
+        listbox.configure(background=bg1, foreground=fg1, selectbackground=ac1)
+
+    window.configure(bg=bg1, padx=14, pady=14)
+    
+
 def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
     # Gets all of the input fields
     serial = serial_entry.get()
@@ -249,10 +280,10 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     password_entry = ttk.Entry(staff_add)
     password_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
 
-    is_admin_button = ttk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0, width = 8)
+    is_admin_button = ttk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0, width = 9)
     is_admin_button.grid(column = 3, row = 5, padx = 2, pady = 2)
 
-    staffid_label = ttk.Label(staff_add, text='Staff ID: ' + str(next_staffid))
+    staffid_label = ttk.Label(staff_add, text='Staff ID: ' + str(next_staffid), justify = "center")
     staffid_label.grid(column = 3, row = 6, padx = 2, pady = 2)
 
     # If list_items isn't 0, it inserts the items found in staff_list using the index into the input fields
@@ -267,6 +298,7 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
         if staff_list[index][8] == "1":
            is_admin_button.invoke()
 
+    tk_style(staff_add)
     staff_add.mainloop()
 
 def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
@@ -324,6 +356,7 @@ def cust_add(cust_sel_entry):
     save_button = ttk.Button(cust_add, text = "Save", command = lambda: cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry))
     save_button.grid(column = 1, row = 3, padx = 2, pady = 2, sticky = 'E')
 
+    tk_style(cust_add)
     cust_add.mainloop()
 
 def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, full_computers_list=0):
@@ -435,6 +468,7 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     except:
         pass
 
+    tk_style(comp_add)
     comp_add.mainloop()
 
 def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
@@ -503,6 +537,7 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
     
     else:
         staff_list = list(csv.reader(open("staff.csv")))
+        print()
 
         # Puts the first two pieces of data (staff ID and name) into a list to be displayed within the listbox
         condensed_list = [[0 for j in range(2)] for i in range(len(staff_list))]
@@ -518,11 +553,12 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 
         listbox = tk.Listbox(list_items, listvariable=list_variable, width = 40)
         listbox.grid(column = 0, row = 1, padx = 8, pady = 2)
-        itemselect = ttk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, list_items, listbox, staff_list))
+        itemselect = ttk.Button(list_items, text = "Select", command = lambda: staff_add(IsAdmin, main_menu, list_items, listbox, staff_list))
         itemselect.grid(column = 0, row = 2, padx = 2, pady = 2, sticky = "W")
         delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, list_items, listbox, staff_list, do_what))
         delitem.grid(column = 0, row = 2, padx = 2, pady = 2, sticky = "E")
 
+    tk_style(list_items, listbox)
     list_items.mainloop()
 
 def list_cust(IsAdmin, main_menu):
@@ -551,7 +587,9 @@ def list_cust(IsAdmin, main_menu):
     listbox.grid(column = 0, row = 1, padx = 8, pady = 2)
     delitem = ttk.Button(list_items, text = "Delete", command = lambda: delete_item(IsAdmin, list_items, listbox, customers_list, do_what = 2))
     delitem.grid(column = 0, row = 2, padx=2, pady=2, sticky = "E")
-
+    
+    tk_style(list_items, listbox)
+    list_items.mainloop()
 
 def delete_item(IsAdmin, list_items, listbox, selected_list_before, do_what):
     # Asks beforehand whether the user wants to continue
@@ -644,6 +682,7 @@ def main_menu(IsAdmin):
         button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
         button_list_staff.grid(row = 6, column = 0, padx = 4, pady = 2)
 
+    tk_style(main_menu)
     main_menu.mainloop()
 
 def login():
@@ -658,11 +697,11 @@ def login():
         # Creates the input boxes for Username and Password
         company_label = ttk.Label(login_prompt, text='PC4U Login', font=("Helvetica", 20))
         company_label.grid(column = 0, row = 0, padx = 2, pady = 4, columnspan = 2)
-        username_label = ttk.Label(login_prompt, text='Username:', width = 9)
+        username_label = ttk.Label(login_prompt, text='Username:', width = 10)
         username_label.grid(column = 0, row = 1, sticky = "W", padx = 2, pady = 2)
         username = ttk.Entry(login_prompt)
         username.grid(column = 1, row = 1, sticky = "W", padx = 2, pady = 2)
-        password_label = ttk.Label(login_prompt, text='Password:', width = 9)
+        password_label = ttk.Label(login_prompt, text='Password:', width = 10)
         password_label.grid(column = 0, row = 2, sticky = "W", padx = 2, pady = 2)
         password = ttk.Entry(login_prompt, show="*")
         password.grid(column = 1, row = 2, sticky = "W", padx = 2, pady = 2)
@@ -670,7 +709,8 @@ def login():
         # Creates the login button, which starts attempt_login()
         button_login = ttk.Button(login_prompt, text = "Login", command = lambda: attempt_login(username, password, login_prompt))
         button_login.grid(column = 0, row = 3, padx = 2, pady = 2, columnspan = 2)
-    
+
+        tk_style(login_prompt)
         login_prompt.mainloop()
     except:
         no_staff()
@@ -718,6 +758,7 @@ def no_staff():
     staff_start_button = ttk.Button(no_staff, text='OK', command = lambda: (newuse(no_staff)))
     staff_start_button.grid(column = 0, row = 2, padx = 2, pady = 2)
     
+    tk_style(no_staff)
     no_staff.mainloop()
 
 # Used to provide the owner a way to create a user
@@ -766,6 +807,7 @@ def newuse(no_staff):
     password_entry = ttk.Entry(newuse)
     password_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
 
+    tk_style(newuse)
     newuse.mainloop()
 
 def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, newuse):
