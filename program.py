@@ -124,9 +124,9 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
             writer = csv.writer(list)
             writer.writerow(save_list)
     
+    comp_add.destroy()
     # Shows a messagebox once saved
     messagebox(message = "Given computer was saved.", messagetitle = "Saved", yesno = 0)
-    comp_add.destroy()
     main_menu(IsAdmin)
 
 def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list=list()):
@@ -232,9 +232,9 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
             writer = csv.writer(list)
             writer.writerow(save_list)
 
+    staff_add.destroy()
     # Shows a messagebox once saved
     messagebox(message = "Given user was saved.", messagetitle = "Saved", yesno = 0)
-    staff_add.destroy()
     main_menu(IsAdmin)
 
 def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
@@ -273,40 +273,40 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     fname_label = ttk.Label(staff_add, text='First Name:', width = 14)
     fname_label.grid(column = 0, row = 0, padx = 2, pady = 2)
     fname_entry = ttk.Entry(staff_add)
-    fname_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
+    fname_entry.grid(column = 1, row = 0, padx = 2, pady = 2, ipady = 4)
     
     sname_label = ttk.Label(staff_add, text='Second Name:', width = 14)
     sname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
     sname_entry = ttk.Entry(staff_add)
-    sname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
+    sname_entry.grid(column = 1, row = 1, padx = 2, pady = 2, ipady = 4)
 
     username_label = ttk.Label(staff_add, text='Username:', width = 14)
     username_label.grid(column = 0, row = 2, padx = 2, pady = 2)
     username_entry = ttk.Entry(staff_add)
-    username_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
+    username_entry.grid(column = 1, row = 2, padx = 2, pady = 2, ipady = 4)
     
     email_label = ttk.Label(staff_add, text='Email:', width = 14)
     email_label.grid(column = 0, row = 3, padx = 2, pady = 2)
     email_entry = ttk.Entry(staff_add)
-    email_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
+    email_entry.grid(column = 1, row = 3, padx = 2, pady = 2, ipady = 4)
     
     phonenum_label = ttk.Label(staff_add, text='Phone Number:', width = 14)
     phonenum_label.grid(column = 0, row = 4, padx = 2, pady = 2)
     phonenum_entry = ttk.Entry(staff_add)
-    phonenum_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
+    phonenum_entry.grid(column = 1, row = 4, padx = 2, pady = 2, ipady = 4)
 
     dob_label = ttk.Label(staff_add, text='Date Of Birth:', width = 14)
     dob_label.grid(column = 0, row = 5, padx = 2, pady = 2)
     dob_entry = ttk.Entry(staff_add)
-    dob_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
+    dob_entry.grid(column = 1, row = 5, padx = 2, pady = 2, ipady = 4)
 
     password_label = ttk.Label(staff_add, text='Password:', width = 14)
     password_label.grid(column = 0, row = 6, padx = 2, pady = 2)
     password_entry = ttk.Entry(staff_add)
-    password_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
+    password_entry.grid(column = 1, row = 6, padx = 2, pady = 2, ipady = 4)
 
     is_admin_button = ttk.Checkbutton(staff_add, text='Is Admin?', variable = is_admin, onvalue = 1, offvalue = 0, width = 9)
-    is_admin_button.grid(column = 3, row = 5, padx = 2, pady = 2)
+    is_admin_button.grid(column = 3, row = 5, padx = 2, pady = 2, sticky = "E")
 
     staffid_label = ttk.Label(staff_add, text='Staff ID: ' + str(next_staffid), justify = "center")
     staffid_label.grid(column = 3, row = 6, padx = 2, pady = 2)
@@ -332,23 +332,23 @@ def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
 
     # Validates on each input field to check whether it is empty
     if custname == "":
-        messagebox.showerror("Error", "There is no customer name.")
+        messagebox(message = "There is no customer name.", messagetitle = "Error", yesno = 0)
         return
     # Validates whether the field has any numbers within it
     i = any(char.isdigit() for char in custname)
     if i:
-        messagebox.showerror("Error", "There should be no numbers in the customers name.")
+        messagebox(message = "There should be no numbers in the customers name.", messagetitle = "Error", yesno = 0)
         return
 
     custphone = custphone_entry.get()
     if custphone == "":
-        messagebox.showerror("Error", "There is no customer phone number.")
+        messagebox(message = "There is no customer phone number.", messagetitle = "Error", yesno = 0)
         return
     # Tries to cast the phone number as an integer, and exits if it cannot
     try:
         i = int(custphone)
     except:
-        messagebox.showerror("Error", "There should not be any letters in the customer phone number.")
+        messagebox(message = "There should not be any letters in the customer phone number.", messagetitle = "Error", yesno = 0)
         return
 
     save_list = [custname, custphone]
@@ -360,24 +360,23 @@ def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
     # Appends the given values back into the combobox of the comp_add menu
     cust_sel_entry['values'] = [[custname, custphone]]
     # Shows a messagebox once saved
-    messagebox.showinfo("Saved", "Given customer was saved.")
+    messagebox(message = "Given customer was saved.", messagetitle = "Saved", yesno = 0)
     cust_add.destroy()
 
 def cust_add(cust_sel_entry):
-    bg1,fg1,ac1 = tk_colours()
     cust_add = tk.Tk()
     cust_add.title('Add new customer')
     cust_add.resizable(width=False, height=False)
 
-    custname_label = ttk.Label(cust_add, text='Customer Name:', width = 15, background=bg1, foreground=fg1)
+    custname_label = ttk.Label(cust_add, text='Customer Name:', width = 15)
     custname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
     custname_entry = ttk.Entry(cust_add, )
-    custname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
+    custname_entry.grid(column = 1, row = 1, padx = 2, pady = 2, ipady = 4)
 
-    custphone_label = ttk.Label(cust_add, text='Customer Phone:', width = 15, background=bg1, foreground=fg1)
+    custphone_label = ttk.Label(cust_add, text='Customer Phone:', width = 15)
     custphone_label.grid(column = 0, row = 2, padx = 2, pady = 2)
     custphone_entry = ttk.Entry(cust_add)
-    custphone_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
+    custphone_entry.grid(column = 1, row = 2, padx = 2, pady = 2, ipady = 4)
 
     save_button = ttk.Button(cust_add, text = "Save", command = lambda: cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry))
     save_button.grid(column = 1, row = 3, padx = 2, pady = 2, sticky = 'E')
@@ -391,7 +390,7 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
         try:
             index = listbox.curselection()[0]
         except:
-            messagebox.showerror("Error", "You have not selected a computer.")
+            messagebox(message = "You have not selected a computer.", messagetitle = "Error", yesno = 0)
             return
         list_items.destroy()
     else:
@@ -443,29 +442,29 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     serial_label = ttk.Label(comp_add, text = 'Serial:', width = 15)
     serial_label.grid(column = 0, row = 0, padx = 2, pady = 2)
     serial_entry = ttk.Entry(comp_add)
-    serial_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
+    serial_entry.grid(column = 1, row = 0, padx = 2, pady = 2, ipadx = 4, ipady = 4)
 
     problem_label = ttk.Label(comp_add, text = 'Problem:', width = 15)
     problem_label.grid(column = 0, row = 1, padx = 2, pady = 2)
     problem_entry = ttk.Entry(comp_add)
-    problem_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
+    problem_entry.grid(column = 1, row = 1, padx = 2, pady = 2, ipadx = 4, ipady = 4)
 
     add_new_cust = ttk.Button(comp_add, text = 'Add new customer', command = lambda: cust_add(cust_sel_entry), width = 20)
-    add_new_cust.grid(column = 0, row = 3, padx = 2, pady = 2, columnspan = 2, sticky = 'E')
+    add_new_cust.grid(column = 0, row = 3, padx = 1, pady = 2, columnspan = 2, sticky = 'E')
     cust_sel_label = ttk.Label(comp_add, text = 'Customer: ', width = 15)
     cust_sel_label.grid(column = 0, row = 4, padx = 2, pady = 2)
-    cust_sel_entry = ttk.Combobox(comp_add, textvariable = current_var2, width = 19)
-    cust_sel_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
+    cust_sel_entry = ttk.Combobox(comp_add, textvariable = current_var2, width = 18)
+    cust_sel_entry.grid(column = 1, row = 4, padx = 2, pady = 2, ipadx = 4, ipady = 4)
     
     repairid_label = ttk.Label(comp_add, text='Repairer ID:', width = 15)
     repairid_label.grid(column = 0, row = 5, padx = 2, pady = 2)
-    repairid_entry = ttk.Combobox(comp_add, textvariable=current_var, width = 19)
-    repairid_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
+    repairid_entry = ttk.Combobox(comp_add, textvariable=current_var, width = 18)
+    repairid_entry.grid(column = 1, row = 5, padx = 2, pady = 2, ipadx = 4, ipady = 4)
 
     collection_label = ttk.Label(comp_add, text='Collection Date:', width = 15)
     collection_label.grid(column = 0, row = 6, padx = 2, pady = 2)
     collection_entry = ttk.Entry(comp_add)
-    collection_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
+    collection_entry.grid(column = 1, row = 6, padx = 2, pady = 2, ipadx = 4, ipady = 4)
     
     # Creates a button if the current user is an admin
     if IsAdmin == 1:
@@ -504,7 +503,7 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
         try:
             open('computers.csv', mode ='r')
         except:
-            messagebox.showerror("Error", "There are no computers added yet.")
+            messagebox(message = "There are no computers added yet.", messagetitle = "Error", yesno = 0)
             return
 
     main_menu.destroy()
@@ -590,9 +589,9 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 def list_cust(IsAdmin, main_menu):
     # Tries to read out the customer list and errors out if it cannot find it
     try:
-        open('staff.csv', mode ='r')
+        open('customers.csv', mode ='r')
     except:
-        messagebox.showerror("Error", "There are no customers added yet.")
+        messagebox(message = "There are no customers added yet.", messagetitle = "Error", yesno = 0)
         return
 
     main_menu.destroy()
@@ -642,7 +641,7 @@ def delete_item(IsAdmin, list_items, listbox, selected_list_before, do_what):
  	       elif do_what == 1:
  	           # If the user selects to delete the owner account, it blocks them from doing so
  	           if to_delete == "1":
- 	               messagebox.showerror("Error", "You cannot delete the owner account.\nIf you mean to change any of its\ninfo, please edit it instead.")
+ 	               messagebox(message = "You cannot delete the owner account.\nIf you mean to change any of its\ninfo, please edit it instead.", messagetitle = "Error", yesno = 0)
  	           else:
  	               with open('staff.csv', 'w', newline='') as list:
  	                   writer = csv.writer(list)
@@ -692,13 +691,13 @@ def main_menu(IsAdmin):
         button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: list_items(IsAdmin, main_menu, staff_list_b = "1"), width = 25)
         button_list_staff.grid(row = 6, column = 0, padx = 4, pady = 2)
     else:
-        button_staff_add = ttk.Button(main_menu, text = "Add Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_staff_add = ttk.Button(main_menu, text = "Add Staff", command = lambda: messagebox(message = "You are not an admin.", messagetitle = "Authentication Failed", yesno = 0), width = 25)
         button_staff_add.grid(row = 4, column = 0, padx = 4, pady = 2)
 
-        button_list_bookings = ttk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_list_bookings = ttk.Button(main_menu, text = "Scrap Listings", command = lambda: messagebox(message = "You are not an admin.", messagetitle = "Authentication Failed", yesno = 0), width = 25)
         button_list_bookings.grid(row = 5, column = 0, padx = 4, pady = 2)
 
-        button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: messagebox.showerror("Authentication Failed", "You are not an admin."), width = 25)
+        button_list_staff = ttk.Button(main_menu, text = "Staff", command = lambda: messagebox(message = "You are not an admin.", messagetitle = "Authentication Failed", yesno = 0), width = 25)
         button_list_staff.grid(row = 6, column = 0, padx = 4, pady = 2)
 
     tk_style(main_menu)
@@ -719,15 +718,15 @@ def login():
         username_label = ttk.Label(login_prompt, text='Username:', width = 10)
         username_label.grid(column = 0, row = 1, sticky = "W", padx = 2, pady = 2)
         username = ttk.Entry(login_prompt)
-        username.grid(column = 1, row = 1, sticky = "W", padx = 2, pady = 2)
+        username.grid(column = 1, row = 1, sticky = "W", padx = 2, pady = 2, ipady = 4)
         password_label = ttk.Label(login_prompt, text='Password:', width = 10)
         password_label.grid(column = 0, row = 2, sticky = "W", padx = 2, pady = 2)
         password = ttk.Entry(login_prompt, show="*")
-        password.grid(column = 1, row = 2, sticky = "W", padx = 2, pady = 2)
+        password.grid(column = 1, row = 2, sticky = "W", padx = 2, pady = 2, ipady = 4)
     
         # Creates the login button, which starts attempt_login()
         button_login = ttk.Button(login_prompt, text = "Login", command = lambda: attempt_login(username, password, login_prompt))
-        button_login.grid(column = 0, row = 3, padx = 2, pady = 2, columnspan = 2)
+        button_login.grid(column = 0, row = 3, padx = 2, pady = 2, columnspan = 2, sticky = "E")
 
         tk_style(login_prompt)
         login_prompt.mainloop()
@@ -794,37 +793,37 @@ def newuse(no_staff):
     fname_label = ttk.Label(newuse, text='First Name:', width = 14)
     fname_label.grid(column = 0, row = 0, padx = 2, pady = 2)
     fname_entry = ttk.Entry(newuse)
-    fname_entry.grid(column = 1, row = 0, padx = 2, pady = 2)
+    fname_entry.grid(column = 1, row = 0, padx = 2, pady = 2, ipady = 4)
     
     sname_label = ttk.Label(newuse, text='Second Name:', width = 14)
     sname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
     sname_entry = ttk.Entry(newuse)
-    sname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
+    sname_entry.grid(column = 1, row = 1, padx = 2, pady = 2, ipady = 4)
 
     username_label = ttk.Label(newuse, text='Username:', width = 14)
     username_label.grid(column = 0, row = 2, padx = 2, pady = 2)
     username_entry = ttk.Entry(newuse)
-    username_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
+    username_entry.grid(column = 1, row = 2, padx = 2, pady = 2, ipady = 4)
     
     email_label = ttk.Label(newuse, text='Email:', width = 14)
     email_label.grid(column = 0, row = 3, padx = 2, pady = 2)
     email_entry = ttk.Entry(newuse)
-    email_entry.grid(column = 1, row = 3, padx = 2, pady = 2)
+    email_entry.grid(column = 1, row = 3, padx = 2, pady = 2, ipady = 4)
     
     phonenum_label = ttk.Label(newuse, text='Phone Number:', width = 14)
     phonenum_label.grid(column = 0, row = 4, padx = 2, pady = 2)
     phonenum_entry = ttk.Entry(newuse)
-    phonenum_entry.grid(column = 1, row = 4, padx = 2, pady = 2)
+    phonenum_entry.grid(column = 1, row = 4, padx = 2, pady = 2, ipady = 4)
 
     dob_label = ttk.Label(newuse, text='Date Of Birth:', width = 14)
     dob_label.grid(column = 0, row = 5, padx = 2, pady = 2)
     dob_entry = ttk.Entry(newuse)
-    dob_entry.grid(column = 1, row = 5, padx = 2, pady = 2)
+    dob_entry.grid(column = 1, row = 5, padx = 2, pady = 2, ipady = 4)
 
     password_label = ttk.Label(newuse, text='Password:', width = 14)
     password_label.grid(column = 0, row = 6, padx = 2, pady = 2)
     password_entry = ttk.Entry(newuse)
-    password_entry.grid(column = 1, row = 6, padx = 2, pady = 2)
+    password_entry.grid(column = 1, row = 6, padx = 2, pady = 2, ipady = 4)
 
     tk_style(newuse)
     newuse.mainloop()
@@ -835,51 +834,51 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     fname = fname_entry.get()
     # Validates on each input field to check whether it is empty
     if fname == "":
-        messagebox.showerror("Error", "There is no data within the first name entry.")
+        messagebox(message = "There is no data within the first name entry.", messagetitle = "Error", yesno = 0)
         return
     # Validates whether the field has any numbers within it
     i = any(char.isdigit() for char in fname)
     if i:
-        messagebox.showerror("Error", "There should be no numbers in the first name.")
+        messagebox(message = "There should be no numbers in the first name.", messagetitle = "Error", yesno = 0)
         return
 
     sname = sname_entry.get()
     if sname == "":
-        messagebox.showerror("Error", "There is no data within the second name entry.")
+        messagebox(message = "There is no data within the second name entry.", messagetitle = "Error", yesno = 0)
         return
     i = any(char.isdigit() for char in sname)
     if i:
-        messagebox.showerror("Error", "There should be no numbers in the second name.")
+        messagebox(message = "There should be no numbers in the second name.", messagetitle = "Error", yesno = 0)
         return
 
     username = username_entry.get()
     if username == "":
-        messagebox.showerror("Error", "There is no data within the username entry.")
+        messagebox(message = "There is no data within the username entry.", messagetitle = "Error", yesno = 0)
         return
 
     email = email_entry.get()
     if email == "":
-        messagebox.showerror("Error", "There is no data within the email entry.")
+        messagebox(message = "There is no data within the email entry.", messagetitle = "Error", yesno = 0)
         return
     # Searches to check whether the @ symbol is present in the field
     if '@' not in email:
-        messagebox.showerror("Error", "This is not a valid email address.")
+        messagebox(message = "This is not a valid email address.", messagetitle = "Error", yesno = 0)
         return
 
     phonenum = phonenum_entry.get()
     if phonenum == "":
-        messagebox.showerror("Error", "There is no data within the phone number entry.")
+        messagebox(message = "There is no data within the phone number entry.", messagetitle = "Error", yesno = 0)
         return
     # Tries to cast the phone number as an integer, and exits if it cannot
     try:
         i = int(phonenum)
     except:
-        messagebox.showerror("Error", "There should not be any letters in the phone number.")
+        messagebox(message = "There should not be any letters in the customer phone number.", messagetitle = "Error", yesno = 0)
         return
 
     dob = dob_entry.get()
     if dob == "":
-        messagebox.showerror("Error", "There is no data within the Date of Birth entry.")
+        messagebox(message = "There is no data within the Date of Birth entry.", messagetitle = "Error", yesno = 0)
         return
     # Uses datetime to validate the format of collection_e
     from datetime import datetime
@@ -887,16 +886,16 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     try:
         i = bool(datetime.strptime(dob, format))
     except:
-        messagebox.showerror("Error", "Date is not in DD/MM/YYYY.")
+        messagebox(message = "Date is not in DD/MM/YYYY.", messagetitle = "Error", yesno = 0)
         return
 
     password = password_entry.get()
     if password == "":
-        messagebox.showerror("Error", "There is no data within the password entry.")
+        messagebox(message = "There is no data within the password entry.", messagetitle = "Error", yesno = 0)
         return
     # Validates the length of the field
     if len(password) <= 3:
-        messagebox.showerror("Error", "Your password is too short.")
+        messagebox(message = "Your password is too short.", messagetitle = "Error", yesno = 0)
         return
 
     # Assigns and casts the owner as an admin account, and the first user
@@ -911,11 +910,14 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
         writer = csv.writer(list)
         writer.writerow(save_list)
 
-    # Shows a messagebox once saved
-    messagebox.showinfo("Saved", "The owner has been saved.")
 
-    # Destroys the window and restarts the program
+    # Destroys the window
     newuse.destroy()
+
+    # Shows a messagebox once saved
+    messagebox(message = "The owner has been saved.", messagetitle = "Saved", yesno = 0)
+
+    # Restarts the program
     login()
 
 # Defines the back buttons for all of the separate menus
