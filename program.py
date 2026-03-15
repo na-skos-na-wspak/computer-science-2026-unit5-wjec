@@ -3,13 +3,12 @@ import tkinter as tk
 from tkinter import ttk
 import csv
 
-def tk_colours():
+def tk_style(window, listbox=0):
+
     bg1 = '#0B0F0E'
     fg1 = '#FFFFFF'
     ac1 = '#E1D99B'
-    return bg1,fg1,ac1
 
-def tk_style(window, listbox=0):
     bg1,fg1,ac1 = tk_colours()
     s = ttk.Style(window)
     s.theme_use('clam')
@@ -36,7 +35,6 @@ def tk_style(window, listbox=0):
     window.configure(bg=bg1, padx=14, pady=14)
 
 def messagebox(message, messagetitle, yesno):
-    bg1,fg1,ac1 = tk_colours()
     messagebox = tk.Tk()
     messagebox.resizable(width=False, height=False)
     messagebox.title(messagetitle)
