@@ -1,17 +1,17 @@
 # Imports all of the modules required for this program
 import tkinter as tk
-from tkinter import messagebox
-from tkinter.messagebox import askyesno
 from tkinter import ttk
 import csv
 
-def tk_style(window, listbox=0):
-
+def tk_colours():
     bg1 = '#0B0F0E'
     fg1 = '#FFFFFF'
     ac1 = '#E1D99B'
+    return bg1,fg1,ac1
 
-    s = ttk.Style()
+def tk_style(window, listbox=0):
+    bg1,fg1,ac1 = tk_colours()
+    s = ttk.Style(window)
     s.theme_use('clam')
     s.configure('TLabel', background=bg1, foreground=fg1, font=('Helvetica', 11))
 
@@ -34,29 +34,54 @@ def tk_style(window, listbox=0):
         listbox.configure(background=bg1, foreground=fg1, selectbackground=ac1)
 
     window.configure(bg=bg1, padx=14, pady=14)
-    
+
+def messagebox(message, messagetitle, yesno):
+    bg1,fg1,ac1 = tk_colours()
+    messagebox = tk.Tk()
+    messagebox.resizable(width=False, height=False)
+    messagebox.title(messagetitle)
+
+    message_label = ttk.Label(messagebox, text=message, justify = "center")
+    message_label.grid(column = 0, row = 0, padx = 4, pady = 4, columnspan = 2)
+    if yesno != 0:
+        no_button = ttk.Button(messagebox, text = "No", command = lambda: messagebox.destroy())
+        no_button.grid(column = 0, row = 1, padx = 2, pady = 6, sticky = "E")
+        yes_button = ttk.Button(messagebox, text = "Yes", command = lambda: func_yes(messagebox))
+        yes_button.grid(column = 1, row = 1, padx = 2, pady = 6, sticky = "E")
+    else:
+        close_button = ttk.Button(messagebox, text = "OK", command = lambda: messagebox.destroy())
+        close_button.grid(column = 0, row = 1, padx = 2, pady = 6, sticky = "E")
+
+    tk_style(messagebox)
+    messagebox.mainloop()
+
+def func_yes(messagebox):
+    global choice_yes
+    choice_yes = 1
+    messagebox.quit()
+    messagebox.destroy()
 
 def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
     # Gets all of the input fields
     serial = serial_entry.get()
     # Validates on each input field to check whether it is empty
     if serial == "":
-        messagebox.showerror("Error", "There is no serial specified.")
+        messagebox(message = "There is no serial specified.", messagetitle = "Error", yesno = 0)
         return
 
     problem = problem_entry.get()
     if problem == "":
-        messagebox.showerror("Error", "There is no problem specified.")
+        messagebox(message = "There is no problem specified.", messagetitle = "Error", yesno = 0)
         return
 
     cust_sel = cust_sel_entry.get()
     if cust_sel == "":
-        messagebox.showerror("Error", "There is no customer specified.")
+        messagebox(message = "There is no customer specified.", messagetitle = "Error", yesno = 0)
         return
 
     repairid = repairid_entry.get()
     if repairid == "":
-        messagebox.showerror("Error", "There is no repairer selected.")
+        messagebox(message = "There is no repairer selected.", messagetitle = "Error", yesno = 0)
         return
 
     # Gets the state for each of the two checkboxes and assigns them to a variable
@@ -65,7 +90,7 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
 
     collection_e = collection_entry.get()
     if collection_e == "":
-        messagebox.showerror("Error", "There is no data within the collection entry.")
+        messagebox(message = "There is no data within the collection entry.", messagetitle = "Error", yesno = 0)
         return
     # Uses datetime to validate the format of collection_e through casting
     from datetime import datetime
@@ -73,7 +98,7 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
     try:
         i = bool(datetime.strptime(collection_e, format))
     except:
-        messagebox.showerror("Error", "Date is not in DD/MM/YYYY.")
+        messagebox(message = "Date is not in DD/MM/YYYY.", messagetitle = "Error", yesno = 0)
         return
 
     # Condenses all the collected variables into a array to be saved
@@ -100,7 +125,7 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
             writer.writerow(save_list)
     
     # Shows a messagebox once saved
-    messagebox.showinfo("Saved", "Given computer was saved.")
+    messagebox(message = "Given computer was saved.", messagetitle = "Saved", yesno = 0)
     comp_add.destroy()
     main_menu(IsAdmin)
 
@@ -110,60 +135,60 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     username = username_entry.get()
     # Validates on each input field to check whether it is empty
     if username == "":
-        messagebox.showerror("Error", "There is no data within the username entry.")
+        messagebox(message = "There is no data within the username entry.", messagetitle = "Error", yesno = 0)
         return
 
     password = password_entry.get()
     if password == "":
-        messagebox.showerror("Error", "There is no data within the password entry.")
+        messagebox(message = "There is no data within the password entry.", messagetitle = "Error", yesno = 0)
         return
     # Validates the length of the field
     if len(password) <= 3:
-        messagebox.showerror("Error", "Your password is too short.")
+        messagebox(message = "Your password is too short.", messagetitle = "Error", yesno = 0)
         return
 
     fname = fname_entry.get()
     if fname == "":
-        messagebox.showerror("Error", "There is no data within the first name entry.")
+        messagebox(message = "There is no data within the first name entry.", messagetitle = "Error", yesno = 0)
         return
     # Validates whether the field has any numbers within it
     i = any(char.isdigit() for char in username)
     if i:
-        messagebox.showerror("Error", "There should be no numbers in the first name.")
+        messagebox(message = "There should be no numbers in the first name.", messagetitle = "Error", yesno = 0)
         return
 
     sname = sname_entry.get()
     if sname == "":
-        messagebox.showerror("Error", "There is no data within the second name entry.")
+        messagebox(message = "There is no data within the second name entry.", messagetitle = "Error", yesno = 0)
         return
     i = any(char.isdigit() for char in username)
     if i:
-        messagebox.showerror("Error", "There should be no numbers in the second name.")
+        messagebox(message = "There should be no numbers in the second name.", messagetitle = "Error", yesno = 0)
         return
 
     email = email_entry.get()
     if email == "":
-        messagebox.showerror("Error", "There is no data within the email entry.")
+        messagebox(message = "There is no data within the email entry.", messagetitle = "Error", yesno = 0)
         return
     # Searches to check whether the @ symbol is present in the field
     if '@' not in email:
-        messagebox.showerror("Error", "This is not a valid email address.")
+        messagebox(message = "This is not a valid email address.", messagetitle = "Error", yesno = 0)
         return
 
     phonenum = phonenum_entry.get()
     if phonenum == "":
-        messagebox.showerror("Error", "There is no data within the phone number entry.")
+        messagebox(message = "There is no data within the phone number entry.", messagetitle = "Error", yesno = 0)
         return
     # Tries to cast the phone number as an integer, and exits if it cannot
     try:
         i = int(phonenum)
     except:
-        messagebox.showerror("Error", "There should not be any letters in the customer phone number.")
+        messagebox(message = "There should not be any letters in the customer phone number.", messagetitle = "Error", yesno = 0)
         return
 
     dob = dob_entry.get()
     if dob == "":
-        messagebox.showerror("Error", "There is no data within the Date of Birth entry.")
+        messagebox(message = "There is no data within the Date of Birth entry.", messagetitle = "Error", yesno = 0)
         return
     # Uses datetime to validate the format of collection_e
     from datetime import datetime
@@ -171,7 +196,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     try:
         i = bool(datetime.strptime(dob, format))
     except:
-        messagebox.showerror("Error", "Date is not in DD/MM/YYYY.")
+        messagebox(message = "Date is not in DD/MM/YYYY.", messagetitle = "Error", yesno = 0)
         return
 
     # Gets the state of the checkbox and assigns it to a variable
@@ -181,7 +206,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     # This is required for use, as there has to be at least ONE administrator account to perform all tasks
     if next_staffid == "1":
         if is_a != 1:
-            messagebox.showerror("Error", "Owner account has to be an admin.")
+            messagebox(message = "Owner account has to be an admin.", messagetitle = "Error", yesno = 0)
             return
 
     # Condenses all the collected variables into a array to be saved
@@ -208,7 +233,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
             writer.writerow(save_list)
 
     # Shows a messagebox once saved
-    messagebox.showinfo("Saved", "Given user was saved.")
+    messagebox(message = "Given user was saved.", messagetitle = "Saved", yesno = 0)
     staff_add.destroy()
     main_menu(IsAdmin)
 
@@ -339,16 +364,17 @@ def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
     cust_add.destroy()
 
 def cust_add(cust_sel_entry):
+    bg1,fg1,ac1 = tk_colours()
     cust_add = tk.Tk()
     cust_add.title('Add new customer')
     cust_add.resizable(width=False, height=False)
 
-    custname_label = ttk.Label(cust_add, text='Customer Name:', width = 15)
+    custname_label = ttk.Label(cust_add, text='Customer Name:', width = 15, background=bg1, foreground=fg1)
     custname_label.grid(column = 0, row = 1, padx = 2, pady = 2)
-    custname_entry = ttk.Entry(cust_add)
+    custname_entry = ttk.Entry(cust_add, )
     custname_entry.grid(column = 1, row = 1, padx = 2, pady = 2)
 
-    custphone_label = ttk.Label(cust_add, text='Customer Phone:', width = 15)
+    custphone_label = ttk.Label(cust_add, text='Customer Phone:', width = 15, background=bg1, foreground=fg1)
     custphone_label.grid(column = 0, row = 2, padx = 2, pady = 2)
     custphone_entry = ttk.Entry(cust_add)
     custphone_entry.grid(column = 1, row = 2, padx = 2, pady = 2)
@@ -593,51 +619,44 @@ def list_cust(IsAdmin, main_menu):
 
 def delete_item(IsAdmin, list_items, listbox, selected_list_before, do_what):
     # Asks beforehand whether the user wants to continue
-    answer = askyesno(title="Delete Item", message="Are you sure you want to\ndelete this item?")
-
+    messagebox(message="Are you sure you want to\ndelete this item?", messagetitle="Delete Item", yesno = 1)
     # Through the use of selected_list_before and do_what the program finds the index and matches the item in the file
-    if answer:
-        index = listbox.curselection()[0]
-        to_delete = selected_list_before[index][0]
+    try:
+ 	   if choice_yes == 1:
+ 	       index = listbox.curselection()[0]
+ 	       to_delete = selected_list_before[index][0]
 
-        # Searches the list for the index and deletes it in the entire list
-        for i in range(len(selected_list_before)):
-            if to_delete == selected_list_before[i][0]:
-                index = i
-        del selected_list_before[index]
-        
-        # Based on the value of do_what the program does different things
-        # It proceeds to rewrite the file with the list
-        if do_what == 0:
-            with open('computers.csv', 'w', newline='') as list:
-                writer = csv.writer(list)
-                writer.writerows(selected_list_before)
+ 	       # Searches the list for the index and deletes it in the entire list
+ 	       for i in range(len(selected_list_before)):
+ 	           if to_delete == selected_list_before[i][0]:
+ 	               index = i
+ 	       del selected_list_before[index]
+ 	       
+ 	       # Based on the value of do_what the program does different things
+ 	       # It proceeds to rewrite the file with the list
+ 	       if do_what == 0:
+ 	           with open('computers.csv', 'w', newline='') as list:
+ 	               writer = csv.writer(list)
+ 	               writer.writerows(selected_list_before)
 
-            messagebox.showinfo("Item Deleted", "The selected item in the list was deleted.")
-            list_items.destroy()
-            main_menu(IsAdmin)
+ 	       elif do_what == 1:
+ 	           # If the user selects to delete the owner account, it blocks them from doing so
+ 	           if to_delete == "1":
+ 	               messagebox.showerror("Error", "You cannot delete the owner account.\nIf you mean to change any of its\ninfo, please edit it instead.")
+ 	           else:
+ 	               with open('staff.csv', 'w', newline='') as list:
+ 	                   writer = csv.writer(list)
+ 	                   writer.writerows(selected_list_before)
 
-        elif do_what == 1:
-            # If the user selects to delete the owner account, it blocks them from doing so
-            if to_delete == "1":
-                messagebox.showerror("Error", "You cannot delete the owner account.\nIf you mean to change any of its\ninfo, please edit it instead.")
-            else:
-                with open('staff.csv', 'w', newline='') as list:
-                    writer = csv.writer(list)
-                    writer.writerows(selected_list_before)
+ 	       elif do_what == 2:
+ 	           with open('customers.csv', 'w', newline='') as list:
+ 	               writer = csv.writer(list)
+ 	               writer.writerows(selected_list_before)
 
-                messagebox.showinfo("Item Deleted", "The selected item in the list was deleted.")
-                list_items.destroy()
-                main_menu(IsAdmin)
-
-        elif do_what == 2:
-            with open('customers.csv', 'w', newline='') as list:
-                writer = csv.writer(list)
-                writer.writerows(selected_list_before)
-
-            messagebox.showinfo("Item Deleted", "The selected item in the list was deleted.")
-            list_items.destroy()
-            main_menu(IsAdmin)
+ 	   list_items.destroy()
+ 	   messagebox(message = "The selected item in the list was deleted.", messagetitle = "Item Deleted", yesno = 0)
+ 	   main_menu(IsAdmin)
+    except: pass
 
 # Destroys the main menu and returns to the login
 def logout(main_menu):
@@ -742,7 +761,7 @@ def attempt_login(username, password, login_prompt):
         
     # Show an errorbox if not
     else:
-        messagebox.showerror("Login Failed", "Invalid username or password")
+        messagebox(message = "Invalid username or password", messagetitle = "Login Failed", yesno = 0)
 
 # Used to initialise the program
 def no_staff():
