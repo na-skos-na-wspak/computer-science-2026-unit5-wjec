@@ -9,7 +9,7 @@ The program should open upon click the 'program.py' file<br>
 where you will be prompted to set it up from scratch.<br><br>
 
 There are example .csv files included in the 'examples' folder,<br>
-copy them to the root of the folder, and then you can login as either:<br><br>
+copy them to the root of the folder, and then you can login as either:<br>
 
 Username 'owner', Password 'owner'<br>
 Username 'stevey', Password 'mcname'
