@@ -559,7 +559,6 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
     
     else:
         staff_list = list(csv.reader(open("staff.csv")))
-        print()
 
         # Puts the first two pieces of data (staff ID and name) into a list to be displayed within the listbox
         condensed_list = [[0 for j in range(2)] for i in range(len(staff_list))]
