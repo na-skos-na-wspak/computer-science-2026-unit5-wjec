@@ -9,7 +9,6 @@ def tk_style(window, listbox=0):
     fg1 = '#FFFFFF'
     ac1 = '#E1D99B'
 
-    bg1,fg1,ac1 = tk_colours()
     s = ttk.Style(window)
     s.theme_use('clam')
     s.configure('TLabel', background=bg1, foreground=fg1, font=('Helvetica', 11))
