@@ -1,7 +1,7 @@
 # Computer Science 2026 Unit5 WJEC Project
 
 This is my A-Level WJEC Computer Science project.<br>
-There has been work done on this program before the first commit.<br><br>
+There has been work done on this program before the first commit.<br>
 
 # How to use
 
