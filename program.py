@@ -2,7 +2,6 @@
 import tkinter as tk
 from tkinter import ttk
 import csv
-import os
 
 # Used to style all the tk widgets
 def tk_style(window, listbox=0):
@@ -12,7 +11,9 @@ def tk_style(window, listbox=0):
     fg1 = '#FFFFFF'
     ac1 = '#E1D99B'
 
+    # Passes in the window for it to be styled (mainly for multiple widgets at once)
     s = ttk.Style(window)
+    # Uses the 'clam' styling as a base
     s.theme_use('clam')
     s.configure('TLabel', background=bg1, foreground=fg1, font=('Helvetica', 11))
 
@@ -31,18 +32,23 @@ def tk_style(window, listbox=0):
     s.configure('TCheckbutton', background=bg1, foreground=fg1, font=('Helvetica', 11))
     s.map('TCheckbutton', background=[('active',bg1)])
 
+    # Checks whether the function has had a listbox passed in, if it does then it styles it
     if listbox != 0:
         listbox.configure(background=bg1, foreground=fg1, selectbackground=ac1)
 
     window.configure(bg=bg1, padx=14, pady=14)
 
+# A simple messagebox created so that it can be themed
+# It allows you to create a simple 'OK' box, or a multiple choice 'yesno' box
 def messagebox(message, messagetitle, yesno):
     messagebox = tk.Tk()
     messagebox.resizable(width=False, height=False)
+    # Titles the window after messagetitle passed in
     messagebox.title(messagetitle)
 
     message_label = ttk.Label(messagebox, text=message, justify = "center")
     message_label.grid(column = 0, row = 0, padx = 4, pady = 4, columnspan = 2)
+    # If yesno != 0, add the yesno buttons in, and run func_yes if yes is pressed
     if yesno != 0:
         no_button = ttk.Button(messagebox, text = "No", command = lambda: messagebox.destroy())
         no_button.grid(column = 0, row = 1, padx = 2, pady = 6, sticky = "E")
@@ -55,6 +61,7 @@ def messagebox(message, messagetitle, yesno):
     tk_style(messagebox)
     messagebox.mainloop()
 
+# Creates a global variable of choice_yes and then continues execution and destroys the window
 def func_yes(messagebox):
     global choice_yes
     choice_yes = 1
@@ -247,7 +254,6 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     else:
         main_menu.destroy()
 
-
     staff_add = tk.Tk()
     staff_add.title('Add Staff')
     staff_add.resizable(width=False, height=False)
@@ -264,7 +270,7 @@ def staff_add(IsAdmin, main_menu, list_items=0, listbox=0, staff_list=0):
     is_admin = tk.IntVar()
     
     # Inserts the buttons into the menu
-    a_back_button = ttk.Button(staff_add, text = "Back", command = lambda: staff_back_button(IsAdmin, staff_add))
+    a_back_button = ttk.Button(staff_add, text = "Back", command = lambda: menu_back_button(IsAdmin, staff_add))
     a_back_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
 
     save_button = ttk.Button(staff_add, text = "Save", command = lambda: save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list))
@@ -433,7 +439,7 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
         condensed_list[i][1] = staff_list[i][1]
     
     # Inserts the buttons into the program
-    a_back_button = ttk.Button(comp_add, text = "Back", command = lambda: comp_back_button(IsAdmin, comp_add))
+    a_back_button = ttk.Button(comp_add, text = "Back", command = lambda: menu_back_button(IsAdmin, comp_add))
     a_back_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
 
     save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
@@ -501,8 +507,12 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
     # This is unneeded for the staff file as it would have to exist to get to this menu
     if staff_list_b == "":
         try:
-            open('computers.csv', mode ='r')
+            full_computers_list = list(csv.reader(open("computers.csv")))
         except:
+            messagebox(message = "There are no computers added yet.", messagetitle = "Error", yesno = 0)
+            return
+
+        if full_computers_list == []:
             messagebox(message = "There are no computers added yet.", messagetitle = "Error", yesno = 0)
             return
 
@@ -513,14 +523,13 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
     list_items.title('List of items')
     list_items.resizable(width=False, height=False)
     
-    a_back_button = ttk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
+    a_back_button = ttk.Button(list_items, text = "Back", command = lambda: menu_back_button(IsAdmin, list_items))
     a_back_button.grid(column = 0, row = 0, padx=2, pady=2, sticky = "E")
     
     
     # If staff_list_b is empty, then it proceeds to read out the computers file
     if staff_list_b == "":
-        full_computers_list = list(csv.reader(open("computers.csv")))
-        computers_list = list(csv.reader(open("computers.csv")))
+        computers_list = full_computers_list
 
         poppable_values = []
 
@@ -588,8 +597,12 @@ def list_items(IsAdmin, main_menu, comp_r = "", comp_s = "", staff_list_b = ""):
 def list_cust(IsAdmin, main_menu):
     # Tries to read out the customer list and errors out if it cannot find it
     try:
-        open('customers.csv', mode ='r')
+        customers_list = list(csv.reader(open("customers.csv")))
     except:
+        messagebox(message = "There are no customers added yet.", messagetitle = "Error", yesno = 0)
+        return
+    
+    if customers_list == []:
         messagebox(message = "There are no customers added yet.", messagetitle = "Error", yesno = 0)
         return
 
@@ -600,10 +613,9 @@ def list_cust(IsAdmin, main_menu):
     list_items.title('List of items')
     list_items.resizable(width=False, height=False)
     
-    a_back_button = ttk.Button(list_items, text = "Back", command = lambda: list_back_button(IsAdmin, list_items))
+    a_back_button = ttk.Button(list_items, text = "Back", command = lambda: menu_back_button(IsAdmin, list_items))
     a_back_button.grid(column = 0, row = 0, padx=2, pady=2, sticky = "E")
     
-    customers_list = list(csv.reader(open("customers.csv")))
 
     list_variable = tk.Variable(value = customers_list)
 
@@ -919,21 +931,17 @@ def newuse_staff(username_entry, password_entry, fname_entry, sname_entry, email
     # Restarts the program
     login()
 
-# Defines the back buttons for all of the separate menus
-def comp_back_button(IsAdmin, comp_add):
-        comp_add.destroy()
-        main_menu(IsAdmin)
+# Defines the back buttons used for all of the separate menus
+def menu_back_button(IsAdmin, window):
+    window.destroy()
+    main_menu(IsAdmin)
 
-def staff_back_button(IsAdmin, staff_add):
-        staff_add.destroy()
-        main_menu(IsAdmin)
-
-def list_back_button(IsAdmin, list_items):
-        list_items.destroy()
-        main_menu(IsAdmin)
-
+# Checks what the current directory for the .py file is
+# This is done so that when starting the program from a file manager,
+# and not a CLI/IDE, so that the program can see its own files.
 def cur_dir():
-    cwd = os.getcwd()
+    import os
+    cwd = os.path.dirname(os.path.realpath(__file__))
     os.chdir(cwd)
 
 cur_dir()
