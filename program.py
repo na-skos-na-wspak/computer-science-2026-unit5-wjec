@@ -2,9 +2,12 @@
 import tkinter as tk
 from tkinter import ttk
 import csv
+import os
 
+# Used to style all the tk widgets
 def tk_style(window, listbox=0):
 
+    # Defines the colours, these can be changed to user preference
     bg1 = '#0B0F0E'
     fg1 = '#FFFFFF'
     ac1 = '#E1D99B'
@@ -929,4 +932,9 @@ def list_back_button(IsAdmin, list_items):
         list_items.destroy()
         main_menu(IsAdmin)
 
+def cur_dir():
+    cwd = os.getcwd()
+    os.chdir(cwd)
+
+cur_dir()
 login()
