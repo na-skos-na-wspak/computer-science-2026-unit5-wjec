@@ -159,7 +159,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
         messagebox(message = "There is no data within the first name entry.", messagetitle = "Error", yesno = 0)
         return
     # Validates whether the field has any numbers within it
-    i = any(char.isdigit() for char in username)
+    i = any(char.isdigit() for char in fname)
     if i:
         messagebox(message = "There should be no numbers in the first name.", messagetitle = "Error", yesno = 0)
         return
@@ -168,7 +168,7 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     if sname == "":
         messagebox(message = "There is no data within the second name entry.", messagetitle = "Error", yesno = 0)
         return
-    i = any(char.isdigit() for char in username)
+    i = any(char.isdigit() for char in sname)
     if i:
         messagebox(message = "There should be no numbers in the second name.", messagetitle = "Error", yesno = 0)
         return
