@@ -14,6 +14,6 @@ copy them to the root of the folder, and then you can login as either:<br>
 Username 'owner', Password 'owner'<br>
 Username 'stevey', Password 'mcname'<br>
 
-# Obligatory Video
+# Video (tm)
 
-It's in demo.mp4
+The video demonstrating the programs functions is included within demo.mp4
