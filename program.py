@@ -68,7 +68,7 @@ def func_yes(messagebox):
     messagebox.quit()
     messagebox.destroy()
 
-def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry="", full_computers_list=list()):
+def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, cust_list, condensed_list, collection_entry="", full_computers_list=list()):
     # Gets all of the input fields
     serial = serial_entry.get()
     # Validates on each input field to check whether it is empty
@@ -76,9 +76,19 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
         messagebox(message = "There is no serial specified.", messagetitle = "Error", yesno = 0)
         return
 
+    # Validates whether the field is too long
+    if len(serial) > 30:
+        messagebox(message = "The serial is too long.", messagetitle = "Error", yesno = 0)
+        return
+
     problem = problem_entry.get()
     if problem == "":
         messagebox(message = "There is no problem specified.", messagetitle = "Error", yesno = 0)
+        return
+
+    # Validates whether the field is too long
+    if len(problem) > 300:
+        messagebox(message = "The problem is too long.", messagetitle = "Error", yesno = 0)
         return
 
     cust_sel = cust_sel_entry.get()
@@ -86,9 +96,29 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
         messagebox(message = "There is no customer specified.", messagetitle = "Error", yesno = 0)
         return
 
+    check_pass = 0
+    for i in range(len(cust_list)):
+        if cust_sel == "{" + cust_list[i][0] + "}" + " " + cust_list[i][1]:
+            check_pass = 1
+        if cust_sel == cust_list[i][0] + " " + cust_list[i][1]:
+            check_pass = 1
+
+    if check_pass != 1:
+        messagebox(message = "There is no valid customer selected.", messagetitle = "Error", yesno = 0)
+        return
+
     repairid = repairid_entry.get()
     if repairid == "":
         messagebox(message = "There is no repairer selected.", messagetitle = "Error", yesno = 0)
+        return
+
+    check_pass = 0
+    for i in range(len(condensed_list)):
+        if repairid == condensed_list[i][0] + " " + condensed_list[i][1]:
+            check_pass = 1
+
+    if check_pass != 1:
+        messagebox(message = "There is no valid repairer selected.", messagetitle = "Error", yesno = 0)
         return
 
     # Gets the state for each of the two checkboxes and assigns them to a variable
@@ -138,11 +168,21 @@ def save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, re
 
 def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry, fname_entry, sname_entry, email_entry, phonenum_entry, dob_entry, is_admin, staff_list=list()):
     
+    # Imports "regular expressions" for the special character check
+    import re
+    # Sets the characters that it looks for
+    regex = re.compile('[@_!#$%^&*()<>?/\\|}{~:]')
+
     # Gets all of the input fields
     username = username_entry.get()
     # Validates on each input field to check whether it is empty
     if username == "":
         messagebox(message = "There is no data within the username entry.", messagetitle = "Error", yesno = 0)
+        return
+
+    # Validates whether the field is too long
+    if len(username) > 20:
+        messagebox(message = "The username is too long.", messagetitle = "Error", yesno = 0)
         return
 
     password = password_entry.get()
@@ -152,6 +192,10 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     # Validates the length of the field
     if len(password) <= 3:
         messagebox(message = "Your password is too short.", messagetitle = "Error", yesno = 0)
+        return
+    # Validates whether the field is too long
+    if len(password) > 30:
+        messagebox(message = "The password is too long.", messagetitle = "Error", yesno = 0)
         return
 
     fname = fname_entry.get()
@@ -163,6 +207,14 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     if i:
         messagebox(message = "There should be no numbers in the first name.", messagetitle = "Error", yesno = 0)
         return
+    # Validates whether the field is too long
+    if len(fname) > 20:
+        messagebox(message = "The first name is too long.", messagetitle = "Error", yesno = 0)
+        return
+    # Validates whether the field has any special characters within it
+    if(regex.search(fname) != None):
+        messagebox(message = "There should be no special characters in the first name.", messagetitle = "Error", yesno = 0)
+        return
 
     sname = sname_entry.get()
     if sname == "":
@@ -172,6 +224,14 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     if i:
         messagebox(message = "There should be no numbers in the second name.", messagetitle = "Error", yesno = 0)
         return
+    # Validates whether the field is too long
+    if len(sname) > 20:
+        messagebox(message = "The second name is too long.", messagetitle = "Error", yesno = 0)
+        return
+    # Validates whether the field has any special characters within it
+    if(regex.search(sname) != None):
+        messagebox(message = "There should be no special characters in the second name.", messagetitle = "Error", yesno = 0)
+        return
 
     email = email_entry.get()
     if email == "":
@@ -180,6 +240,10 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
     # Searches to check whether the @ symbol is present in the field
     if '@' not in email:
         messagebox(message = "This is not a valid email address.", messagetitle = "Error", yesno = 0)
+        return
+    # Validates whether the field is too long
+    if len(email) > 40:
+        messagebox(message = "The email is too long.", messagetitle = "Error", yesno = 0)
         return
 
     phonenum = phonenum_entry.get()
@@ -191,6 +255,9 @@ def save_staff(staff_add, IsAdmin, next_staffid, username_entry, password_entry,
         i = int(phonenum)
     except:
         messagebox(message = "There should not be any letters in the customer phone number.", messagetitle = "Error", yesno = 0)
+        return
+    if int(phonenum) != 11:
+        messagebox(message = "The phone number should be 11 characters long.", messagetitle = "Error", yesno = 0)
         return
 
     dob = dob_entry.get()
@@ -336,6 +403,11 @@ def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
     # Gets all of the input fields
     custname = custname_entry.get()
 
+    # Imports "regular expressions" for the special character check
+    import re
+    # Sets the characters that it looks for
+    regex = re.compile('[@_!#$%^&*()<>?/\\|}{~:]')
+
     # Validates on each input field to check whether it is empty
     if custname == "":
         messagebox(message = "There is no customer name.", messagetitle = "Error", yesno = 0)
@@ -344,6 +416,10 @@ def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
     i = any(char.isdigit() for char in custname)
     if i:
         messagebox(message = "There should be no numbers in the customers name.", messagetitle = "Error", yesno = 0)
+        return
+    # Validates whether the field has any special characters within it
+    if(regex.search(custname) != None):
+        messagebox(message = "There should be no special characters in the customer name.", messagetitle = "Error", yesno = 0)
         return
 
     custphone = custphone_entry.get()
@@ -355,6 +431,9 @@ def cust_save(cust_add, custname_entry, custphone_entry, cust_sel_entry):
         i = int(custphone)
     except:
         messagebox(message = "There should not be any letters in the customer phone number.", messagetitle = "Error", yesno = 0)
+        return
+    if int(custphone) != 11:
+        messagebox(message = "The phone number should be 11 characters long.", messagetitle = "Error", yesno = 0)
         return
 
     save_list = [custname, custphone]
@@ -423,6 +502,15 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     # Loads the staff list to add them into the combobox
     staff_list = list(csv.reader(open("staff.csv")))
 
+    # Puts the first two pieces of data (staff ID and name) into a list to be used to validate for a repairer
+    condensed_list = [[0 for j in range(2)] for i in range(len(staff_list))]
+
+    for i in range(len(staff_list)):
+        #0 denotes the staff id
+        #2 denotes the name of the person
+        condensed_list[i][0] = staff_list[i][0]
+        condensed_list[i][1] = staff_list[i][1]
+
     # Tries to load the customer list to add them into the combobox 
     try:
         cust_list = list(csv.reader(open("customers.csv")))
@@ -442,7 +530,7 @@ def comp_add(IsAdmin, main_menu=0, list_items=0, listbox=0, computers_list=0, fu
     a_back_button = ttk.Button(comp_add, text = "Back", command = lambda: menu_back_button(IsAdmin, comp_add))
     a_back_button.grid(column = 3, row = 0, padx = 2, pady = 2, sticky = "E")
 
-    save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, collection_entry, full_computers_list))
+    save_button = ttk.Button(comp_add, text = "Save", command = lambda: save_comp(comp_add, IsAdmin, serial_entry, problem_entry, cust_sel_entry, repairid_entry, is_scrap, is_ready, cust_list, condensed_list, collection_entry, full_computers_list))
     save_button.grid(column = 3, row = 1, padx = 2, pady = 2, sticky = "E")
     
     serial_label = ttk.Label(comp_add, text = 'Serial:', width = 15)
